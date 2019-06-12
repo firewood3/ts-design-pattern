@@ -34,7 +34,8 @@
     - Observer
     - Visitor
 7. Patterns and Architectures in JavaScript and TypeScript
-    - takes a look at the patterns and architectures that closely relate to the language (JavaScript or TypeScript)
+    - takes a look at the patterns and architectures that closely relate to the language (JavaScript or TypeScript) and its application
+    - including asynchronous programming, module organization, error handling, permission abstraction, and so on. 
 8. SOLID Principles
     - Single respnsibility
     - Open-closed
