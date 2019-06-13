@@ -6,4 +6,57 @@
 간단한 서버-클라이언트 프로그램을 실행해보고 이 프로그램에 나타난 복잡성을 어떻게 줄여나갈지 생각해본다. (이 서버-클라이언트 프로그램은 HTTP나 Socket을 사용하지 않고 함수를 사용하여 직접 통신한다.)
 
 
+client.ts
+```ts
+import { Server, DataStore } from '../src/server';
 
+export class Client {
+    store: DataStore = {
+        timestamp: 0,
+        data: undefined
+    };
+
+    constructor (public server: Server) {}
+
+    // 클라이언트의 DataStore와 서버의 DataStore의 동기를 맞춘다.
+    synchronize() : void {
+        let updatedStore = this.server.synchronize(this.store);
+
+        if (updatedStore) {
+            this.store = updatedStore;
+        }
+    }
+
+    update(data: string): void {
+        this.store.data = data;
+        this.store.timestamp = Date.now();
+    }
+}
+```
+
+server.ts
+```ts
+export interface DataStore {
+    timestamp: number;
+    data: string | undefined;
+}
+
+export class Server {
+    store: DataStore = {
+        timestamp: 0,
+        data: ''
+    };
+
+    // 클라이언트의 DataStore와 서버의 DataStore의 동기를 맞춘다.
+    synchronize(clientDataStore: DataStore): DataStore | undefined {
+        if (clientDataStore.timestamp > this.store.timestamp) {
+            this.store = clientDataStore;
+            return undefined;
+        } else if (clientDataStore.timestamp < this.store.timestamp) {
+            return this.store;
+        } else {
+            return undefined;
+        }
+    }
+}
+```
