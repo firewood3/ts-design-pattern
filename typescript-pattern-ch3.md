@@ -18,7 +18,8 @@
 - Concrete creator: FreightRocketFactory <br>=> 요구되는 Concrete Product를 생성하기 위해 특정 펙토리 메소드를 구현하거나 오버라이드 한 클래스
 
 ### pattern scope
-펙토리 메소드 패턴은 Rocket을 만드는 것을 생성자 실행으로부터 분리하고, 적절히 변형된 Rocket을 만드는 하위 클래스를 생성할 수 있도록 한다.
+- 펙토리 메소드 패턴은 Rocket을 만드는 것을 생성자 실행으로부터 분리하고, 적절히 변형된 Rocket을 만드는 하위 클래스(Concrete creator)를 생성할 수 있도록 한다.
+- concrete creator는 전체의 Product를 만드는 것 보다 각 세부사항(Components)를 만드는 것에 조금 더 중점을 둔다.
 
 ### Implementation
 [전체코드](https://github.com/firewood3/ts-design-pattern/blob/master/ch03/factory-method/src/factory-method.ts)
@@ -125,5 +126,101 @@ FreightRocket {
 - Client: <br>=> Factory의 생산 공정을 배치한다. 이때의 Factory는 Abstract factory의 산업 표준을 준수해야한다.
 
 ### Pattern scope
+- Abstract Factory 패턴은 서로다른 Concrete factory들의 상위에 추상화를 만든다.
+- 만약 Concrete factory가 한개라면, Factory Method Pattern 처럼 작동한다.
+- Abstract Factory 패턴의 중요한점은 product를 교체할 수 있다는 점이다. (Factory가 추상화 되어 있어서 Client의 매개변수로 서로다른 Concrete Factory를 받을 수 있고, 그래서 concrete product를 교체할 수 있게된다.)
+- 이패턴은 UI 구현에서 컴포넌트로 자주 사용된다.
 
 ### Implementation
+[전체코드](https://github.com/firewood3/ts-design-pattern/blob/master/ch03/abstract-factory/src/absctract-method.ts)
+
+```ts
+// Abstract Product
+class Rocket {
+  payload!: Payload;
+  stages!: Stage[];
+}
+
+// Abstract Factory
+interface RocketFactory<T extends Rocket> {
+	createRocket(): T;
+	createPayload(): Payload;
+	createStages(): Stage[];
+}
+
+// Client
+class Client {
+	buildRocket<T extends Rocket>(factory: RocketFactory<T>): T {
+		let rocket = factory.createRocket();
+		rocket.payload = factory.createPayload();
+		rocket.stages = factory.createStages();
+		return rocket;
+	}
+}
+
+// Concrete Product
+class ExperimentalRocket implements Rocket {
+	payload!: ExperimentalPayload;
+	stages!: [ExperimentalRocketStage];
+}
+
+// Concrete Factory
+class ExperimentalRocketFactory implements RocketFactory<ExperimentalRocket> {
+	createRocket(): ExperimentalRocket {
+			return new ExperimentalRocket();
+	}
+	
+	createPayload(): ExperimentalPayload {
+			return new ExperimentalPayload();
+	}
+	
+	createStages(): [ExperimentalRocketStage] {
+			return [new ExperimentalRocketStage()];
+	}
+}
+
+// Concrete Product
+class FreightRocket implements Rocket {
+	payload!: Satellite;
+	stages!: FreightRocketStages;
+}
+
+// Concrete Factory
+class FreightRocketFactory implements RocketFactory<FreightRocket> {
+	nextSatelliteId = 0;
+	
+	createRocket(): FreightRocket {
+			return new FreightRocket();
+	}
+	
+	createPayload(): Satellite {
+			return new Satellite(this.nextSatelliteId++, 100);
+	}
+	
+	createStages(): FreightRocketStages {
+			return [
+					new FreightRocketFirstStage(),
+					new FreightRocketSecondStage()
+			];
+	}
+}
+
+let client = new Client();
+// Client의 매개변수로 들어오는 Concrete Factory를 교체하면 Product도 교체된다.
+let experimentalRocket = client.buildRocket(new ExperimentalRocketFactory());
+let freightRocket = client.buildRocket(new FreightRocketFactory());
+console.log(experimentalRocket);
+console.log(freightRocket);
+
+/*
+콘솔 출력
+ExperimentalRocket {
+  payload: ExperimentalPayload {},
+  stages: [ ExperimentalRocketStage {} ] }
+FreightRocket {
+  payload: Satellite { id: 0, weight: 100 },
+  stages: [ FreightRocketFirstStage {}, FreightRocketSecondStage {} ] }
+*/
+```
+
+### 

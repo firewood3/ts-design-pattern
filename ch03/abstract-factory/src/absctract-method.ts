@@ -103,7 +103,18 @@ class FreightRocketFactory implements RocketFactory<FreightRocket> {
 }
 
 let client = new Client();
+// Client의 매개변수로 들어오는 Concrete Factory를 교체하면 Product도 교체된다.
 let experimentalRocket = client.buildRocket(new ExperimentalRocketFactory());
-console.log(experimentalRocket);
 let freightRocket = client.buildRocket(new FreightRocketFactory());
+console.log(experimentalRocket);
 console.log(freightRocket);
+
+/*
+콘솔 출력
+ExperimentalRocket {
+  payload: ExperimentalPayload {},
+  stages: [ ExperimentalRocketStage {} ] }
+FreightRocket {
+  payload: Satellite { id: 0, weight: 100 },
+  stages: [ FreightRocketFirstStage {}, FreightRocketSecondStage {} ] }
+*/
