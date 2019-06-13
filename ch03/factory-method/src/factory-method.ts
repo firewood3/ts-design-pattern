@@ -95,7 +95,7 @@ class FreightRocketFactory extends RocketFactory {
 			new FirstStage(),
 			new SecondStage()
 		];
-	}
+	} 
 }
 
 let freightRocketFactory = new FreightRocketFactory();
