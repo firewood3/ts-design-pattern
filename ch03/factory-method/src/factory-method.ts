@@ -29,11 +29,11 @@ class RocketFactory {
     rocket.payload = payload;
     rocket.stages = stages;
     return rocket;
-	}
+  }
 	
-	createRocket(): Rocket {
-		return new Rocket();
-	}
+  createRocket(): Rocket {
+    return new Rocket();
+  }
   
   createPayload(): Payload {
     return new Payload(0);
@@ -55,9 +55,9 @@ class FreightRocket extends Rocket { }
 
 class Satellite extends Payload {
   constructor(
-		public id: number
-	) {
-      super(200);
+    public id: number
+  ) {
+     super(200);
   }
 }
 
