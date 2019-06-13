@@ -89,7 +89,7 @@ class FreightRocketFactory extends RocketFactory {
 
   createPayload(): Satellite {
 		return new Satellite(this.nextSatelliteId++);
-	}
+	  }
   createStages(): FreightRocketStages {
 		return [
 			new FirstStage(),
