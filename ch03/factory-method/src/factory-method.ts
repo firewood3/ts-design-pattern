@@ -102,7 +102,3 @@ let freightRocketFactory = new FreightRocketFactory();
 let freightRocket = freightRocketFactory.buildRocket();
 
 console.log(freightRocket);
-
-let freightRocket2 = freightRocketFactory.buildRocket();
-
-console.log(freightRocket2);
