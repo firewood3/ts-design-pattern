@@ -9,10 +9,13 @@
 ![factory method pattern](/images/factory-mathod-pattern.png)
 
 ### Participants
-- Product: Rocket<br>=> Define an abstract class or an interface of a rocket that will be created as the product. 
-- Concrete product: FregithRocket <br>=> Implement a specific rocket product.
-- Creator: RocketFactory <br>=> Define the optionally abstract factory class that creates products.
-- Concrete creator: <br>=> FreightRocketFactory
+- Product: Rocket<br>=> Product는 추상 클래스나 인터페이스로 정의
+- Concrete product: FregithRocket <br>=> 특정 product의 구현체
+- Creator: RocketFactory <br>=> Product를 생성하는 추상 클래스
+- Concrete creator: FreightRocketFactory <br>=> 요구되는 Concrete Product를 생성하기 위해 특정 펙토리 메소드를 구현하거나 오버라이드 한 클래스
+
+### pattern scope
+펙토리 메소드 패턴은 Rocket을 만드는 것을 생성자 실행으로부터 분리하고, 적절히 변형된 Rocket을 만드는 하위 클래스를 생성하는 것을 가능하게 한다.
 
 ### Implementation
 [전체코드](https://github.com/firewood3/ts-design-pattern/blob/master/ch03/factory-method/src/factory-method.ts)
@@ -102,3 +105,5 @@ FreightRocket {
 }
 */
 ```
+
+## Abstract Factory Pattern
