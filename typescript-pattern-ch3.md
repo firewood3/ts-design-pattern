@@ -1,66 +1,30 @@
 # Creational Design Patterns
-Creational Design Patterns는 객체의 인스턴스화에 적용할 수 있는 디자인 패턴이다.
+[Creational Design Patterns](https://en.wikipedia.org/wiki/Creational_pattern)는 객체의 생성 메커니즘을 다루는 패턴이다.
+- 의의: 일반적으로 객체를 생성할 경우 객체 내부의 세부사항을 조립하는 유연성을 갖지 못한다. Creational Design Patterns은 이러한 문제점을 해결한다.
 
-Payload, Engine, Stage을 프로퍼티로 가지는 Rocket을 객체를 생성해보자.
-```ts
-  class Payload {
-     weight: number;
-}
-   class Engine {
-     thrust: number;
-}
-   class Stage {
-     engines: Engine[];
-}
-```
+Creational Design class diagram<br>
+![Creational](/images/Creational_Pattern_Simple_Structure.png)
 
-자바스크립트에서는 다음과 같은 방법으로 객체를 생성할 수 있었다.
-- Constructor with new operator 
-- Factory function
-
-```js
- function Rocket() {
-     this.payload = {
-       name: 'cargo ship'
-     };
-     this.stages = [
-       {
-         engines: [
-           // ...
-           ] }
-]; }
-   var rocket = new Rocket();
-```
-
-```js
-function buildRocket() {
-     var rocket = {};
-     rocket.payload = {
-       name: 'cargo ship'
-     };
-     rocket.stages = [
-       {
-         thrusters: [
-           // ...
-] }
-];
-     return rocket;
-   }
-   var rocket = buildRocket();
-```
-
-처음의 코드는 건설 과정과와 리턴객체의 강한 연관이 있고, 반면에 두번째 코드는 리턴객체의 인터페이스를 암시한다.
-
-그러나 이 두 코드 모두, rocket의 세부사항을 조립하는 유연성을 제공하지 못한다. 이것에 관한 이야기가 Creational Design Patterns이다.
+### Participants:
+- Creator: Declares object interface. Returns object.
+- ConcreteCreator: Implements object's interface.
 
 ## Factory method
-인스턴스를 만들 때, 생성자를 사용하는 대신 팩토리 추상 클래스를 사용하는 방법. 하위 클래스가 implementing 메소드나 overriding 메소드로 변경할 수 있게 한다.
-
-어떤 객체가 생성될지 예측할 수 없다. 이 하위 클래스들은 좀더 구체적인 버전의 객체를 생성하길 원한다. 이럴때, 펙토리메소드 패턴이 쓰일 수 있다.
-
-다음은 펙토리 메소드 패턴이 적용가능한 구조이다.
+생성자를 사용해 인스턴스를 만드는 대신, 추상 메서드를 사용하여 인스턴스를 만드는 방법.
+- 생성되는 객체를 정확히 예측할 수 없거나, 하위 클래스들이 좀더 구체적인 버전의 객체를 생성하길 원한다면 이 패턴이 적용될 수 있다.
 
 ![factory method pattern](/images/factory-mathod-pattern.png)
+
+### Participants
+- Product: Rocket<br>=> Define an abstract class or an interface of a rocket that will be created as the product. 
+- Concrete product: FregithRocket <br>=> Implement a specific rocket product.
+- Creator: RocketFactory <br>=> Define the optionally abstract factory class that creates products.
+- Concrete creator: <br>=> FreightRocketFactory
+
+### Implementation
+
+
+
 
 펙토리 메소드는 객체를 건설하는 공장으로써의 메소드이다.  전체 로켓을 건설하거나 싱글 컴포넌트를 건설하는 메소드가 팩토리 메소드가 될 수 있다.
 
