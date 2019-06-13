@@ -51,6 +51,14 @@ let rocket = rocketFactory.buildRocket();
 
 console.log(rocket);
 
+/*
+  콘솔 출력
+  Rocket {
+    payload: Payload { weight: 0 },  
+    stages: [ Stage { engines: [Array] } ] 
+  }
+ */
+
 class FreightRocket extends Rocket { }
 
 class Satellite extends Payload {
@@ -72,33 +80,45 @@ class FirstStage extends Stage {
 }
 
 class SecondStage extends Stage {
-	constructor() {
-		super([
-			new Engine(1000)
+  constructor() {
+	super([
+		new Engine(1000)
 	]); }
 }
 
 type FreightRocketStages = [FirstStage, SecondStage];
 
 class FreightRocketFactory extends RocketFactory {
-	nextSatelliteId = 0;
-
-	createRocket(): FreightRocket {
-		return new FreightRocket();
-	}
+  nextSatelliteId = 0;
+  
+  createRocket(): FreightRocket {
+	  return new FreightRocket();
+  }
 
   createPayload(): Satellite {
-		return new Satellite(this.nextSatelliteId++);
-	  }
+	return new Satellite(this.nextSatelliteId++);
+  }
+  
   createStages(): FreightRocketStages {
-		return [
-			new FirstStage(),
-			new SecondStage()
-		];
-	} 
+	return [
+		new FirstStage(),
+		new SecondStage()
+	];
+  } 
 }
 
 let freightRocketFactory = new FreightRocketFactory();
 let freightRocket = freightRocketFactory.buildRocket();
 
 console.log(freightRocket);
+
+/*
+콘솔 출력
+FreightRocket {
+  payload: Satellite { weight: 200, id: 0 },
+  stages:[
+    FirstStage { engines: [Array] },
+    SecondStage { engines: [Array] }
+  ]
+}
+*/
