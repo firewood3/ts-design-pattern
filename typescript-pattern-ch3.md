@@ -1,11 +1,14 @@
 # Creational Design Patterns
 [Creational Design Patterns](https://en.wikipedia.org/wiki/Creational_pattern)는 객체의 생성 메커니즘을 다루는 패턴이다.
-- 일반적으로 객체를 생성할 경우 객체 내부의 세부사항을 조립하는 유연성을 갖지 못한다. Creational Design Patterns은 이러한 문제점을 해결한다.
+- 일반적으로 객체(Product)를 생성할 경우 내부의 세부사항(Components)을 조립하는 유연성을 갖지 못한다. Creational Design Patterns은 이러한 문제점을 해결한다.
 
 ## Factory Method Pattern
 객체의 생성과정을 하위 클래스에게 위임하는 패턴
 - 생성되는 객체를 정확히 예측할 수 없거나, 하위 클래스들이 좀더 구체적인 버전의 객체를 생성하길 원한다면 이 패턴이 적용될 수 있다.
+- 기능이 확장되면 그에 맞는 펙토리 메소드를 구현하면 되므로 확장성이 뛰어난 코드를 만들 수 있다. [참조](https://meylady.tistory.com/59)
+- 객체의 생성 과정을 하위 클래스에 위임하므로서 결합도가 낮아진다. [참조](https://jdm.kr/blog/180)
 
+### Factory Method Diagram
 ![factory method pattern](/images/factory-mathod-pattern.png)
 
 ### Participants
@@ -107,3 +110,20 @@ FreightRocket {
 ```
 
 ## Abstract Factory Pattern
+추상 팩토리 패턴은 concrete products를 구체화하지 않고 팩토리 메소드들의 컬렉션을 인터페이스로 제공한다. 이렇게 하면, 전체의 펙토리는 교환가능하게 된다.
+
+팩토리 메소드와 다른점은 client로 불리는 부분으로 Product를 빌드하는 과정을 추출해낸 것이다. 이렇게 하므로써, factory 부분은 좀더 Components(Product의 property)에 집중할 수 있다.
+
+### Abstract Factory Diagram
+![abstract-factory-pattern](/images/abstract-factory-pattern.png)
+
+### participants
+- Abstract factory: RocketFactory<br>=> Components를 제작하거나 복잡한 Products를 제조하기위한 인터페이스로써의 산업 표준 팩토리를 정의 한 것.
+- Concrete factory: ExperimentalRocketFactory, FreightRocketFacory<br>=> Absctract factory의 구현체이며, Concrete Products를 건설한다.
+- Abstract products: Rocket, Payload, Stage[] <br>=> Factory로부터 빌드될 Product를 정의한 인터페이스
+- Concrete products: ExperimentalRocket/FreightRocket, ExperimentalPayload/Satellite<br>=> Concrete Factory로부터 제조되는 실제 Products
+- Client: <br>=> Factory의 생산 공정을 배치한다. 이때의 Factory는 Abstract factory의 산업 표준을 준수해야한다.
+
+### Pattern scope
+
+### Implementation
