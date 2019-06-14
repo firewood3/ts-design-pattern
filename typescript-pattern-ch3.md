@@ -536,3 +536,29 @@ FreightRocket {
 ### Consequences
 - Building step은 서로에게 영향을 미치는 방식으로 설계되었기 때문에 Final Product의 구조를 보다 잘 제어 할 수 있다.
 - 서브 클래스에서는 Director를 변경하지 않는 선에서 최대한의 유연성을 발휘할 수 있다.
+
+
+## Singleton Pattern
+객체의 인스턴스가 단 하나만 존재해야할 때 싱클톤 패턴을 사용할 수 있다. [참고](https://basarat.gitbooks.io/typescript/docs/tips/singleton.html)
+
+```ts
+class Singleton {
+    private static instance: Singleton;
+    private constructor() {
+        // do something construct...
+    }
+    static getInstance() {
+        if (!Singleton.instance) {
+            Singleton.instance = new Singleton();
+            // ... any one time initialization goes here ...
+        }
+        return Singleton.instance;
+    }
+    someMethod() { }
+}
+
+let something = new Singleton() // Error: constructor of 'Singleton' is private.
+
+let instance = Singleton.getInstance() // do something with the instance...
+
+```
