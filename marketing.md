@@ -40,12 +40,19 @@ IT산업이 계속적으로 진화하면서, 다양한 디바이스에서 나오
 
 <br>이 발표에서는, GDB의 컨셉(고도로 연결된 부분에서의 관계 기반의  데이터 분석에 강점을 가지는)을 소개하고, PG와 GDB의 조합에 따른 시너지 효과를 소개한다. 이 발표를 통해 참석자들은 PG의 무한한 확장성을 발견할 수 있을 것이다.
 
+복잡한 환경에서의 쿼리, 효율적인 모델링. 멀티 데이터베이스의 파급력
+GDB의 컨셉과 PG와 GDB의 조합에 따른 시너지 효과
+
 
 ### Waht to expect at the Booth?
 booth에서는 AgensGraph의 특징에 대해 배우는것이나 Q&A같은것에 대한 대화를 한다. Postgres와 AgensGraph의 협력을 알리는 사용사례 데모를 전시한다.
 
+AgensGraph에 대해 알리고 PG와 AgensGraph의 협력 사례를 데모한다.
+
 ### What Bitnine has in store for you!
 Postgres는 거대한 커뮤니티와 함께 30년이 넘는 시간동안 개발활동을 하고 꾸준하게 성장해왔다. 관련된 직업군의 사람들에게 이 이벤트에 참가할 것을 권고한다.
+
+AgensGraph의 특징 설명
 
 AgensGraph는 PostgreSQL과 그래프를 완전히 통합하는 유일한 multi-model DBMS이다. 당신은 하나의 쿼리 실행으로 SQL과 Cypher를 동시에 사용할 수 있다. 관리할수있는 데이터를 SQL에서 그래프로 마그레이션 하거나 현제의 RDB환경을 계속해서 유지하는 것과 같은 혜텍들이 있다. 기존의 RDB환경을 GDB로 변경하기위해 많은 노력이 필요없다.
 
