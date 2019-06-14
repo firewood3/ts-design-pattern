@@ -9,22 +9,21 @@ interface Payload {
 interface Stage {
 	engines: Engine[];
 }
+
+// Abstract Product
 interface Rocket {
 	payload: Payload;
 	stages: Stage[];
 }
 
-class Rocket {
-  payload!: Payload;
-  stages!: Stage[];
-}
-
+// Abstract Factory
 interface RocketFactory<T extends Rocket> {
 	createRocket(): T;
 	createPayload(): Payload;
 	createStages(): Stage[];
 }
 
+// Client
 class Client {
 	buildRocket<T extends Rocket>(factory: RocketFactory<T>): T {
 		let rocket = factory.createRocket();
@@ -42,11 +41,13 @@ class ExperimentalRocketStage implements Stage {
 	engines!: Engine[];
 }
 
+// Concrete Product
 class ExperimentalRocket implements Rocket {
 	payload!: ExperimentalPayload;
 	stages!: [ExperimentalRocketStage];
 }
 
+// Concrete Factory
 class ExperimentalRocketFactory implements RocketFactory<ExperimentalRocket> {
 	createRocket(): ExperimentalRocket {
 			return new ExperimentalRocket();
@@ -78,11 +79,13 @@ class FreightRocketSecondStage implements Stage {
 
 type FreightRocketStages = [FreightRocketFirstStage, FreightRocketSecondStage];
 
+// Concrete Product
 class FreightRocket implements Rocket {
 	payload!: Satellite;
 	stages!: FreightRocketStages;
 }
 
+// Concrete Factory
 class FreightRocketFactory implements RocketFactory<FreightRocket> {
 	nextSatelliteId = 0;
 	

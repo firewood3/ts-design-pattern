@@ -58,9 +58,6 @@ var RocketFactory = /** @class */ (function () {
     };
     return RocketFactory;
 }());
-var rocketFactory = new RocketFactory();
-var rocket = rocketFactory.buildRocket();
-console.log(rocket);
 var FreightRocket = /** @class */ (function (_super) {
     __extends(FreightRocket, _super);
     function FreightRocket() {
@@ -119,6 +116,25 @@ var FreightRocketFactory = /** @class */ (function (_super) {
     };
     return FreightRocketFactory;
 }(RocketFactory));
+var rocketFactory = new RocketFactory();
+var rocket = rocketFactory.buildRocket();
+console.log(rocket);
 var freightRocketFactory = new FreightRocketFactory();
 var freightRocket = freightRocketFactory.buildRocket();
 console.log(freightRocket);
+/*
+콘솔 출력
+Rocket {
+  payload: Payload { weight: 0 },
+  stages: [ Stage { engines: [Array] } ]
+}
+    
+
+FreightRocket {
+  payload: Satellite { weight: 200, id: 0 },
+  stages:[
+    FirstStage { engines: [Array] },
+    SecondStage { engines: [Array] }
+  ]
+}
+*/ 

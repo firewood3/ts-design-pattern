@@ -11,7 +11,8 @@
     - Factory Method
     - Abstract Factory
     - Builder
-    - Prototype and Singleton
+    - Prototype
+    - Singleton
 4. Structural Design Patterns
     - Composite
     - Decorator

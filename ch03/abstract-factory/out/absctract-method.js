@@ -5,11 +5,6 @@ var Engine = /** @class */ (function () {
     }
     return Engine;
 }());
-var Rocket = /** @class */ (function () {
-    function Rocket() {
-    }
-    return Rocket;
-}());
 var Client = /** @class */ (function () {
     function Client() {
     }
@@ -91,7 +86,17 @@ var FreightRocketFactory = /** @class */ (function () {
     return FreightRocketFactory;
 }());
 var client = new Client();
+// Client의 매개변수로 들어오는 Concrete Factory를 교체하면 Product도 교체된다.
 var experimentalRocket = client.buildRocket(new ExperimentalRocketFactory());
-console.log(experimentalRocket);
 var freightRocket = client.buildRocket(new FreightRocketFactory());
+console.log(experimentalRocket);
 console.log(freightRocket);
+/*
+콘솔 출력
+ExperimentalRocket {
+  payload: ExperimentalPayload {},
+  stages: [ ExperimentalRocketStage {} ] }
+FreightRocket {
+  payload: Satellite { id: 0, weight: 100 },
+  stages: [ FreightRocketFirstStage {}, FreightRocketSecondStage {} ] }
+*/ 

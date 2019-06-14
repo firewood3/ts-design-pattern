@@ -18,14 +18,29 @@
 - Concrete creator: FreightRocketFactory <br>=> 요구되는 Concrete Product를 생성하기 위해 특정 펙토리 메소드를 구현하거나 오버라이드 한 클래스
 
 ### pattern scope
-- 펙토리 메소드 패턴은 Rocket을 만드는 것을 생성자 실행으로부터 분리하고, 적절히 변형된 Rocket을 만드는 하위 클래스(Concrete creator)를 생성할 수 있도록 한다.
+- 펙토리 메소드 패턴은 Product를 만드는 것을 생성자 실행으로부터 분리하고, Concrete product를 만드는 하위 클래스(Concrete creator)를 생성할 수 있도록 한다.
 - concrete creator는 전체의 Product를 만드는 것 보다 각 세부사항(Components)를 만드는 것에 조금 더 중점을 둔다.
 
 ### Implementation
-[전체코드](https://github.com/firewood3/ts-design-pattern/blob/master/ch03/factory-method/src/factory-method.ts)
-
-Product와 Creator
 ```ts
+class Payload {
+  constructor(
+      public weight: number
+  ) { }
+}
+
+class Engine {
+  constructor(
+      public thrust: number
+  ) { }
+}
+
+class Stage {
+  constructor(
+      public engines: Engine[]
+  ) { }
+}
+
 class Rocket {
   payload!: Payload;
   stages!: Stage[];
@@ -56,42 +71,59 @@ class RocketFactory {
   }
 }
 
+class FreightRocket extends Rocket { }
+
+class Satellite extends Payload {
+  constructor(
+    public id: number
+  ) {
+     super(200);
+  }
+}
+
+class FirstStage extends Stage {
+  constructor() {
+    super([
+      new Engine(1000),
+      new Engine(1000),
+      new Engine(1000),
+      new Engine(1000)
+  ]); }
+}
+
+class SecondStage extends Stage {
+  constructor() {
+	super([
+		new Engine(1000)
+	]); }
+}
+
+type FreightRocketStages = [FirstStage, SecondStage];
+
+class FreightRocketFactory extends RocketFactory {
+  nextSatelliteId = 0;
+  
+  createRocket(): FreightRocket {
+	  return new FreightRocket();
+  }
+
+  createPayload(): Satellite {
+	return new Satellite(this.nextSatelliteId++);
+  }
+  
+  createStages(): FreightRocketStages {
+	return [
+		new FirstStage(),
+		new SecondStage()
+	];
+  } 
+}
+
+
 let rocketFactory = new RocketFactory();
 let rocket = rocketFactory.buildRocket();
 
 console.log(rocket);
-
-/*
-  콘솔 출력
-  Rocket {
-    payload: Payload { weight: 0 },  
-    stages: [ Stage { engines: [Array] } ] 
-  }
- */
-```
-
-Concreate Product와 Concreate Creator
-```ts
-class FreightRocket extends Rocket { }
-
-class FreightRocketFactory extends RocketFactory {
-  nextSatelliteId = 0;
-
-  createRocket(): FreightRocket {
-		return new FreightRocket();
-  }
-
-  createPayload(): Satellite {
-		return new Satellite(this.nextSatelliteId++);
-	}
-
-  createStages(): FreightRocketStages {
-		return [
-			new FirstStage(),
-			new SecondStage()
-		];
-  } 
-}
 
 let freightRocketFactory = new FreightRocketFactory();
 let freightRocket = freightRocketFactory.buildRocket();
@@ -100,6 +132,12 @@ console.log(freightRocket);
 
 /*
 콘솔 출력
+Rocket {
+  payload: Payload { weight: 0 },  
+  stages: [ Stage { engines: [Array] } ] 
+}
+	
+
 FreightRocket {
   payload: Satellite { weight: 200, id: 0 },
   stages:[
@@ -135,10 +173,22 @@ FreightRocket {
 [전체코드](https://github.com/firewood3/ts-design-pattern/blob/master/ch03/abstract-factory/src/absctract-method.ts)
 
 ```ts
+class Engine {
+	constructor(
+			public thrust: number
+	) { }
+}
+interface Payload {
+	weight: number;
+}
+interface Stage {
+	engines: Engine[];
+}
+
 // Abstract Product
-class Rocket {
-  payload!: Payload;
-  stages!: Stage[];
+interface Rocket {
+	payload: Payload;
+	stages: Stage[];
 }
 
 // Abstract Factory
@@ -156,6 +206,14 @@ class Client {
 		rocket.stages = factory.createStages();
 		return rocket;
 	}
+}
+
+class ExperimentalPayload implements Payload {
+	weight!: number;
+}
+
+class ExperimentalRocketStage implements Stage {
+	engines!: Engine[];
 }
 
 // Concrete Product
@@ -178,6 +236,23 @@ class ExperimentalRocketFactory implements RocketFactory<ExperimentalRocket> {
 			return [new ExperimentalRocketStage()];
 	}
 }
+
+class Satellite implements Payload {
+	constructor(
+			public id: number,
+			public weight: number
+	) { }
+}
+
+class FreightRocketFirstStage implements Stage {
+	engines!: Engine[];
+}
+
+class FreightRocketSecondStage implements Stage {
+	engines!: Engine[];
+}
+
+type FreightRocketStages = [FreightRocketFirstStage, FreightRocketSecondStage];
 
 // Concrete Product
 class FreightRocket implements Rocket {
@@ -223,4 +298,241 @@ FreightRocket {
 */
 ```
 
-### 
+### Consequences
+- Abstract Factory pattern을 사용하면 전체 제품군을 쉽게 변경할 수 있다.
+- Abstract Factory pattern과 Factory Method 패턴에서 여러 Components로 구성된 Product를 만들고자 할때, 각각의 Factory에서는 Product를 Component별로 분리하여 유연성을 얻을 수 있다.
+- 그러나 고정된 Product의 Component가 요구사항을 충족시킬수 없을 때에는 Builder Pattern을 생각해 볼 수 있다.
+
+## Builder Pattern
+> Builder Pattern은 product의 내부 구조를 캡슐화 하고, building steps만 드러낸다. 그리고 이를 통해 복잡한 객체를보다 유연하게 추상화하고 구현할 수 있다.
+
+### Builder Pattern Diagram
+![Builder pattern](/images/builder-pattern.png)
+
+### Participants
+- Builder: RocketBuilder <br>=> Product를 건설하는 인터페이스들를 정의
+- Concrete builder: FalconBuilder <br>=> Product의 부분을 건설하는 인터페이스를 구현한 메소드
+- Director: <br>=> Product를 만들기 위해 steps를 정의하고 builder와 협력을 정의
+- Final product: Falcon <br> => Builder에 의해 건설된 Product
+
+
+### Pattern scope
+- 최종적인 Product를 생성하기위해 operations(Buidling step)을 추상화하여 추출하는 것은 Abstract Factory Pattern과 비슷하다.
+- Builder Pattern은 각 building step 간의 관계에 보다 더 중점을 두어야 한다. (building step들이 독립적이지 못하다.)
+- 반면, Abstract Factory Pattern은 각각 컴포넌트를 생성하는데 중점을 준다. (각 component는 독립적이다.)
+
+### Implementation
+```ts
+class Engine {
+	constructor(
+			public thrust: number
+	) { }
+}
+
+interface Payload {
+	weight: number;
+}
+
+interface Stage {
+	engines: Engine[];
+}
+
+interface Rocket {
+	payload: Payload;
+}
+
+abstract class RocketBuilder<TRocket extends Rocket, TPayload extends Payload> {
+	createRocket(): void { }
+	
+	addPayload(payload: TPayload): void { }
+	
+	addStages(): void { }
+	
+	refuelRocket(): void { }
+	
+	get rocket(): TRocket {
+			throw new Error('Not implemented');
+	}
+}
+
+class Director {
+	prepareRocket<TRocket extends Rocket, TPayload extends Payload>(
+			builder: RocketBuilder<TRocket, TPayload>,
+			payload: TPayload
+	): TRocket {
+			builder.createRocket();
+			builder.addPayload(payload);
+			builder.addStages();
+			builder.refuelRocket();
+			return builder.rocket;
+	}
+}
+
+// SOUNDING ROCKET
+
+class Probe implements Payload {
+	weight!: number;
+}
+
+class SolidRocketEngine extends Engine { }
+
+class SoundingRocket implements Rocket {
+	payload!: Probe;
+	engine!: Engine;
+}
+
+class SoundingRocketBuilder extends RocketBuilder<SoundingRocket, Probe> {
+	private buildingRocket!: SoundingRocket;
+	
+	createRocket(): void {
+			this.buildingRocket = new SoundingRocket();
+	}
+	
+	addPayload(probe: Probe): void {
+			this.buildingRocket.payload = probe;
+	}
+	
+	addStages(): void {
+			let payload = this.buildingRocket.payload;
+			this.buildingRocket.engine = new SolidRocketEngine(payload.weight);
+	}
+	
+	get rocket(): SoundingRocket {
+			return this.buildingRocket;
+	}
+}
+
+// FREIGHT ROCKET
+
+class Satellite implements Payload {
+	constructor(
+			public id: number,
+			public weight: number
+	) { }
+}
+
+class LiquidRocketEngine extends Engine {
+	fuelLevel = 0;
+	
+	refuel(level: number): void {
+			this.fuelLevel = level;
+	}
+}
+
+abstract class LiquidRocketStage implements Stage {
+	engines: LiquidRocketEngine[] = [];
+	
+	refuel(level = 100): void {
+			for (let engine of this.engines) {
+					engine.refuel(level);
+			}
+	}
+}
+
+class FreightRocketFirstStage extends LiquidRocketStage {
+	constructor(thrust: number) {
+			super();
+			
+			let enginesNumber = 4;
+			let singleEngineThrust = thrust / enginesNumber;
+			
+			for (let i = 0; i < enginesNumber; i++) {
+					this.engines.push(new LiquidRocketEngine(singleEngineThrust));
+			}
+	}
+}
+
+class FreightRocketSecondStage extends LiquidRocketStage {
+	constructor(thrust: number) {
+			super();
+			this.engines.push(new LiquidRocketEngine(thrust));
+	}
+}
+
+type FreightRocketStages = [FreightRocketFirstStage, FreightRocketSecondStage];
+
+class FreightRocket implements Rocket {
+	payload!: Satellite;
+	// @ts-ignore
+	stages = [] as FreightRocketStages;
+}
+
+class FreightRocketBuilder extends RocketBuilder<FreightRocket, Satellite> {
+	private buildingRocket!: FreightRocket;
+	
+	createRocket(): void {
+			this.buildingRocket = new FreightRocket();
+	}
+	
+	addPayload(satellite: Satellite): void {
+			this.buildingRocket.payload = satellite;
+	}
+	
+	addStages(): void {
+			let rocket = this.buildingRocket;
+			let payload = rocket.payload;
+			let stages = rocket.stages;
+			
+			stages[0] = new FreightRocketFirstStage(payload.weight * 4);
+			
+			if (payload.weight >= FreightRocketBuilder.oneStageMax) {
+					stages[1] = new FreightRocketSecondStage(payload.weight);
+			}
+	}
+	
+	refuel(): void {
+			let rocket = this.buildingRocket;
+			let payload = rocket.payload;
+			let stages = rocket.stages;
+			
+			let oneMax = FreightRocketBuilder.oneStageMax;
+			let twoMax = FreightRocketBuilder.twoStagesMax;
+			
+			let weight = payload.weight;
+			
+			stages[0].refuel(Math.min(weight, oneMax) / oneMax * 100);
+			
+			if (weight >= oneMax) {
+					stages[1].refuel((weight - oneMax) / (twoMax - oneMax) * 100);
+			}
+	}
+	
+	get rocket(): FreightRocket {
+			return this.buildingRocket;
+	}
+	
+	static oneStageMax = 1000;
+	static twoStagesMax = 2000;
+}
+
+
+let director = new Director();
+
+let soundingRocketBuilder = new SoundingRocketBuilder();
+let probe = new Probe();
+let soundingRocket = director.prepareRocket(soundingRocketBuilder, probe);
+
+console.log(soundingRocket);
+
+let freightRocketBuilder = new FreightRocketBuilder();
+let satellite = new Satellite(0, 1200);
+let freightRocket = director.prepareRocket(freightRocketBuilder, satellite);
+
+console.log(freightRocket);
+	 
+/*
+SoundingRocket {
+  payload: Probe {},
+	engine: SolidRocketEngine { thrust: } }
+	
+FreightRocket {
+  stages:
+   [ FreightRocketFirstStage { engines: [Array] },
+     FreightRocketSecondStage { engines: [Array] } ],
+  payload: Satellite { id: 0, weight: 1200 } }
+*/
+```
+
+### Consequences
+- Building step은 서로에게 영향을 미치는 방식으로 설계되었기 때문에 Final Product의 구조를 보다 잘 제어 할 수 있다.
+- 서브 클래스에서는 Director를 변경하지 않는 선에서 최대한의 유연성을 발휘할 수 있다.
