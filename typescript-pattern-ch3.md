@@ -538,6 +538,27 @@ FreightRocket {
 - 서브 클래스에서는 Director를 변경하지 않는 선에서 최대한의 유연성을 발휘할 수 있다.
 
 
+## Prototype Pattern
+자바스크립트는 prototype 기반의 언어이기 때문에, 상속관계에 있는 하위 클래스의 인스턴스를 초기값을 지정해 줄때, prototype을 사용할 수 있다.
+```ts
+class Base {
+    state: number;
+}
+
+let base = new Base();
+base.state = 1;
+
+class Derived extends Base { }
+Derived.prototype = base;
+
+//derived의 state 값은 base의 state값으로 초기화 되었다.
+let derived = new Derived();
+console.log(derived.state); //1
+```
+
+>ES6에서는 prototype 변경자를 숨긴다.
+
+
 ## Singleton Pattern
 객체의 인스턴스가 단 하나만 존재해야할 때 싱클톤 패턴을 사용할 수 있다. [참고](https://basarat.gitbooks.io/typescript/docs/tips/singleton.html)
 
