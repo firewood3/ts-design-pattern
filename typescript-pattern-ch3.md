@@ -3,6 +3,12 @@
 - 일반적으로 객체(Product)를 생성할 경우 내부의 세부사항(Components)을 조립하는 유연성을 갖지 못한다. Creational Design Patterns은 이러한 문제점을 해결한다.
 
 ## Factory Method Pattern
+### 재정리
+- Product을 만들기 위한 Factory를 만드는 패턴
+- 상위 Product와 비슷한 제품군은 상위 Factory를 상속한 하위 Factory를 사용하여 하위 Product들을 만들어 낼 수 있다.
+- Factory는 Product의 Component의 생성에 집중하고 Product는 Component의 조립으로 만들어진다.
+
+### 개요
 객체의 생성과정을 하위 클래스에게 위임하는 패턴
 - 생성되는 객체를 정확히 예측할 수 없거나, 하위 클래스들이 좀더 구체적인 버전의 객체를 생성하길 원한다면 이 패턴이 적용될 수 있다.
 - 기능이 확장되면 그에 맞는 펙토리 메소드를 구현하면 되므로 확장성이 뛰어난 코드를 만들 수 있다. [참조](https://meylady.tistory.com/59)
@@ -149,9 +155,9 @@ FreightRocket {
 ```
 
 ## Abstract Factory Pattern
-추상 팩토리 패턴은 concrete products를 구체화하지 않고 팩토리 메소드들의 컬렉션을 인터페이스로 제공한다. 이렇게 하면, 전체의 펙토리는 교환가능하게 된다.
-
-팩토리 메소드와 다른점은 client로 불리는 부분으로 Product를 빌드하는 과정을 추출해낸 것이다. 이렇게 하므로써, factory 부분은 좀더 Components(Product의 property)에 집중할 수 있다.
+### 개요
+- 추상 팩토리 패턴은 concrete products를 구체화하지 않고 팩토리 메소드들의 컬렉션을 인터페이스로 제공한다. 이렇게 하면, 전체의 펙토리는 교환가능하게 된다.
+- 팩토리 메소드와 다른점은 client로 불리는 부분으로 Product를 빌드하는 과정을 추출해낸 것이다. 이렇게 하므로써, factory 부분은 좀더 Components(Product의 property)에 집중할 수 있다.
 
 ### Abstract Factory Diagram
 ![abstract-factory-pattern](/images/abstract-factory-pattern.png)
@@ -304,6 +310,13 @@ FreightRocket {
 - 그러나 고정된 Product의 Component가 요구사항을 충족시킬수 없을 때에는 Builder Pattern을 생각해 볼 수 있다.
 
 ## Builder Pattern
+
+### 재정리
+- Abstract Factory Pattern과의 차이점은 Product를 캡슐화 한 것이다.
+- builder 내에서 product에 접근할 수 있으므로 좀 더 유연성을 제공한다.
+- 하지만 Building steps간의 의존관계가 생긴다.
+
+### 개요
 > Builder Pattern은 product의 내부 구조를 캡슐화 하고, building steps만 드러낸다. 그리고 이를 통해 복잡한 객체를보다 유연하게 추상화하고 구현할 수 있다.
 
 ### Builder Pattern Diagram
