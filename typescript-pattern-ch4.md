@@ -146,3 +146,10 @@ Welcome to hello world
 
 */
 ```
+
+## Decorator Pattern
+데코레이터 패턴은 객체에 원래 기능은 손상시키지 않으면서 새로운 기능을 동적으로 더하는 패턴이다.
+
+### Diagram
+
+### Participants
