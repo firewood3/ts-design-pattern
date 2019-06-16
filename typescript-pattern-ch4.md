@@ -26,9 +26,9 @@ Structural Design Pattern은 객체의 구성에 대한 패턴이다.
 ![composite pattern](/images/composite-pattern.png)
 
 ### Participants
-- Component() : composite 객체의 기본 동작을 선언하는 인터페이스이다.
+- Component: composite 객체의 기본 동작을 선언하는 인터페이스이다.
 <br>ex) Node
-- Composite(): 자식 컴포넌트들을 저장하고 컴포넌트의 동작을 정의한다.
+- Composite: 자식 컴포넌트들을 저장하고 컴포넌트의 동작을 정의한다.
 <br>ex) HtmlHeadElement, HTMLBodyElement
 - Leaf: 원시 컴포넌트의 동작을 정의한다.
 <br>ex) TextNode, HTMLImageElement
