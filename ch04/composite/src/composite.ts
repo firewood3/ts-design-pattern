@@ -1,7 +1,9 @@
+// component
 export interface HTMLNode {	
   print(): void;
 }
 
+// composite
 export class CompositeHTMLNode implements HTMLNode{
 	nodes = Array<HTMLNode>();
 
@@ -20,6 +22,7 @@ export class CompositeHTMLNode implements HTMLNode{
 	}
 }
 
+// leaf
 export class ImageNode implements HTMLNode { 
 	constructor(
 		private imagePath: string
@@ -30,6 +33,7 @@ export class ImageNode implements HTMLNode {
 	}
 }
 
+// leaf
 export class TextNode implements HTMLNode {
 	constructor(
 		private message: string
@@ -40,6 +44,7 @@ export class TextNode implements HTMLNode {
 	}
 }
 
+// client
 export class HTMLDom {
 	html!: CompositeHTMLNode;
 
