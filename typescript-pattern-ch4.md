@@ -706,3 +706,71 @@ textElement.render();
 - 브릿지 패턴은 "Abstraction"과 "implementer"를 분리하므로써, 시스템에 큰 확장성을 가져온다.
 - "Client" 는 "Implementer"의 세부사항에 대해서 알 필요가 없기때문에 시스템의 안정성 및 건강한 Dependency 구조를 설계하는데도 도움이 된다.
 
+## Façade Pattern
+- 퍼사드 패턴은 Subsystem을 조직화하고 통일화된 상위 계층의 인터페이스를 제공한다.
+- 모듈형 라이브러리를 사용할때 퍼사드 패턴을 사용하면 프로젝트를 쉽게 유지 관리 할 수 있다.
+
+### Diagram
+![facade-pattern](/images/facade-pattern.png)
+
+- "Client"는 "Subsystem"에 직접 접근하지 않고 "Subsystem"을 간단한 인터페이스로 제공하는 "Facade"를 사용하여 접근한다.
+- "Client"는 오직 간단한 "Facade" 인터페이스에 의존하고 복잡한 "Subsystem"에 의존하지 않는다.
+
+### Participants
+- Façade: 상위 계층의 인터페이스를 정의하고 "Subsystems"와 협력하는 클래스
+- Subsystems: 자신의 기능을 실행하고 필요하면 다른 "Subsystems"과의 내부적으로 의사소통하는 모듈
+
+### Pattern Scope
+- 파사드 패턴은 "상위 계층의 인터페이스"와 "Subsystems"간의 교차점 역할을 한다.
+- 파사드 패턴의 중요한점은, 모듈("Subsystems")의 어떤 의존성을 사용할지말지 선을 그리는 것이다.
+
+### Implementation
+```ts
+// Subsystem
+class Cpu {
+  freeze(): void {}
+  jump(): void {}
+  execute(): void {}
+}
+
+// Subsystem
+class HardDrive {
+  read(): void {}
+  save(): void {}
+}
+
+// Subsystem
+class Memory {
+  load(): void {}
+}
+
+// Façade
+class ComputerFacade {
+  processer: Cpu;
+  ram: Memory;
+  hd: HardDrive;
+
+  constructor() {
+    this.processer = new Cpu();
+    this.ram = new Memory();
+    this.hd = new HardDrive();
+  }
+
+  // 컴퓨터가 시작되는 부분은 상위계층의 인터페이스로 제공됨.
+  start() {
+    this.processer.freeze();
+    this.ram.load();
+    this.processer.jump();
+    this.processer.execute();
+  }
+}
+
+let computerFacade = new ComputerFacade();
+computerFacade.start();
+```
+
+### Consequences
+- 파사드 패턴은 "Client"와 "Subsystems" 간의 결합성(Coupling)을 느슨하게 한다.
+- "Facade"는 "Client"가 적절한 "Subsystems"에게 명령들을 전달할 수 있도록 한다.
+- 파사드 패턴을 사용하므로써, 시스템의 구조를 직관적이고 깨끗하게 유지할 수 있다.
+
