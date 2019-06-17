@@ -596,3 +596,113 @@ Recharge finished
 
 ### Consequences
 - Adapter Pattern을 사용하면 원래 함께 작동하지 않는 클래스 사이의 틈을 메울 수 있다.
+
+## Bridge Pattern
+- Bridge Pattern은 구현부에서 추상층을 분리하는 패턴이다. 구현부에서 추상층이 분리되면 구현부에 각자 독립적인 추상층을 추가하여 독립적으로 변형할 수 있게 된다. 또한 추상층을 변경할 수도 있다.
+
+### Diagram
+![bridge-pattern](/images/bridge-pattern.png)
+- UIComponent를 SVG나 Canvas에 그릴 수 있을 경우, UIComponent와 UIToolkit간의 연결을 브릿지로 하여 UIComponent는 UIToolKit의 구현체를 추상화하여 분리할 수 있다.
+
+### Participants
+![bridge-pattern2](/images/bridge-pattern2.png)
+- Abstraction: Implementer의 참조를 가지고 있는 인터페이스
+<br>ex) UIElement
+- Refined abstraction: Abstraction의 구현체, 독립적인 추상층을 가지는 구현부
+<br>ex) TextElement, ImageElement
+- Implementer: 추상층을 정의한 인터페이스
+<br>ex) UIToolkit
+- Concrete implementer: Implementer의 구현체, 독립적인 추상층
+<br>ex) SVGToolkit, CanvasToolkit
+
+### Pattern scope
+- 브릿지 패턴은 다양한 "Implementer"과 함께 작동하는 것을 제공하지만, 대부분의 경우 브릿지 패턴은 단일 "Implementer"와 작동한다.
+- 브릿지 패턴이 어탭터 패턴과의 차이점은 어댑터 패턴은 기존의 "Client"가 설계상 사용하지 않는 "adaptee"와 협업하기 위해 "adapter"의 구현에 초점을 두는 반면, 브릿지 패턴은 "adapter" 부분에 해당하는 "Implementer"를 미리 잘 고려하고 예측하여 보편적 인터페이스를 제공한다.
+
+### Implementation
+```ts
+interface UIToolkit {
+    drawBorder(): void;
+    drawImage(src: string): void;
+    drawText(text: string): void;
+}
+
+abstract class UIElement {
+    constructor(
+        public toolkit: UIToolkit
+    ) { }
+
+    abstract render(): void;
+}
+
+class TextElement extends UIElement {
+    constructor(
+        public text: string,
+        toolkit: UIToolkit
+    ) {
+        super(toolkit);
+    }
+
+    render(): void {
+        this.toolkit.drawText(this.text);
+    }
+}
+
+class ImageElement extends UIElement {
+    constructor(
+        public src: string,
+        toolkit: UIToolkit
+    ) {
+        super(toolkit);
+    }
+
+    render(): void {
+        this.toolkit.drawImage(this.src);
+    }
+}
+
+export class SVGToolkit implements UIToolkit {
+    drawBorder(): void {
+      
+    }
+    
+    drawImage(src: string): void {
+      console.log(`[SVGToolkit] image src: ${src}`);
+    }
+
+    drawText(text: string): void {
+			console.log(`[SVGToolkit] text: ${text}`);
+    }
+}
+
+
+export class CanvasToolkit implements UIToolkit {
+	drawBorder(): void {
+      
+	}
+	
+	drawImage(src: string): void {
+		console.log(`[CanvasToolkit] image src: ${src}`);
+	}
+
+	drawText(text: string): void {
+		console.log(`[CanvasToolkit] text: ${text}`);
+	}
+}
+
+let imageElement = new ImageElement('foo.jpg', new SVGToolkit);
+let textElement = new TextElement('bar', new CanvasToolkit);
+
+imageElement.render();
+textElement.render();
+
+/*
+[SVGToolkit] image src: foo.jpg
+[CanvasToolkit] text: bar
+*/
+```
+
+### Consequences
+- 브릿지 패턴은 "Abstraction"과 "implementer"를 분리하므로써, 시스템에 큰 확장성을 가져온다.
+- "Client" 는 "Implementer"의 세부사항에 대해서 알 필요가 없기때문에 시스템의 안정성 및 건강한 Dependency 구조를 설계하는데도 도움이 된다.
+
