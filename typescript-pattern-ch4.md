@@ -8,7 +8,7 @@ Structural Design Pattern은 객체의 구성에 대한 패턴이다.
 
 - Composite: 원시적인 composite object를 사용하여 구조를 빌드 하는 것이다. tree-like
 - Decorator: 기능성을 클래스나 객체에 동적으로 추가하는 것이다. 
-- Adapter: concrete adapters들의 실행에 의한 다른 adaptees들과 함께 작동하는 general interface를 제공한다. 하나의 콘텐츠 관리 시스템에서 서로다른 데이터베이스의 선택을 제공하는 것을 생각해보자.
+- Adapter: concrete adapters들의 실행에 의한 다른 adaptees들과 함께 작동하는 general interface를 제공한다.
 - Bridge: 구현으로부터 추상을 분리하고 분리해낸 둘을 교환가능하게 만든다.
 - Facade: 복잡한 하위 시스템들의 조합을 위한 간단한 인터페이스를 제공한다.
 - Flyweight: 메모리 효율성과 성능을 향상시키기위해 많은 아이템을 사용하는 무상태의 객체들을 공유한다.
@@ -373,3 +373,226 @@ test.setBBB(new DDD());
 - 데코레이터 패턴의 핵심은 기능을 동적으로 추가하는 것이다.
 - 제대로 작성된 데코레이터 패턴은 데코레이터 호출 순서에 상관없이 항상 잘 작동해야 한다.
 
+## Adapter Pattern
+[Adapter Pattern](https://en.wikipedia.org/wiki/Adapter_pattern)
+- 어댑터 패턴은 클래스의 인터페이스를 다른 인터페이스로 변환하는 패턴이다.
+- 어댑터 패턴은 서로 다른 인터페이스가 함께 작업을 할 수 있도록 한다.
+
+### Diagram
+![Adapter](/images/adapter-pattern.png)
+- "client"는 "target"을 가지고 있지만, "adaptee"는 "target"과 호환되지 않으므로 "client"는 "adaptee"에 직접 접근할 수 없다. 하지만, "client"는 "target"을 구현한 "adapter"를 사용하여 "adaptee"에 접근할 수 있다.
+
+#### Object Adapter Pattern
+![Object-Adapter](/images/object-adapter-pattern.png)
+- Object Adapter Pattern은 "adapter"가 "adatee"를 구성하고(composition) 형태를 말한다.
+- adapter의 operatorion은 "adapter"가 "adaptee"의 인스턴스의 메소드를 호출하는 형태이다.[adaptee.specificOperation()]
+
+#### Class Adapter Pattern
+![Object-Adapter](/images/class-adapter-pattern.png)
+- Class Adapter Pattern은 "adapter"가 "adaptee"를 상속받는 형태를 말한다. (하나의 어뎁터로 다양한 adaptee로 변환하려면 다중 상속으로 구현)
+- adapter의 operation은 "adapter"가 상속받은 "adatee"의 메소드를 호출하는 형태이다.[specificOperation()]
+
+### Participants
+- Target: Client에서 작동할 인터페이스
+- Adaptee: Client에서 작동되도록 디자인 되지 않은 구현체
+- Adapter: Adaptee와 상호작용하는 Target 인터페이스의 구현체
+- Client: Target을 조작하는 클래스
+
+### Pattern Scope
+- Adapter Pattern은 기존의 client 클래스가 기존의 adaptee와 작동하도록 설계되지 않은 경우에 적용할 수 있다.
+
+### Object Adapter Pattern Implementation
+```ts
+export interface LightningPhone {
+	useLightning(): void;
+	recharge(): void;
+}
+
+// target
+export interface MicroUsbPhone {
+	useMicroUsb(): void;
+	recharge(): void;
+}
+
+// adaptee
+export class Iphone implements LightningPhone {
+	connector!: boolean;
+
+	useLightning(): void {
+		this.connector = true;
+		console.log("Lightning connected");
+	}
+
+  recharge(): void {
+		if (this.connector) {
+			console.log("Recharge started");
+			console.log("Recharge finished");
+		} else {
+			console.log("Connect Lightning first");
+		}
+	}
+}
+
+export class Android implements MicroUsbPhone {
+	connector!: boolean;
+
+	useMicroUsb(): void {
+		this.connector = true;
+		console.log("MicroUsb connected");
+	}
+
+  recharge(): void {
+		if (this.connector) {
+			console.log("Recharge started");
+			console.log("Recharge finished");
+		} else {
+			console.log("Connect MicroUsb first");
+		}
+	}
+}
+
+// adapter
+export class LightningToMicroUsbAdapter implements MicroUsbPhone {
+	constructor(
+		// object adapter pattern
+		private lightningPhone: LightningPhone
+	) { }
+
+	useMicroUsb() {
+		console.log("MicroUsb connected");
+		// 인스턴스의 메소드 호출
+		this.lightningPhone.useLightning();
+	}
+
+	recharge() {
+		// 인스턴스의 메소드 호출
+		this.lightningPhone.recharge();
+	}
+}
+
+// client
+export class MicroUsbPhoneRecharger {
+	dockPhone(phone: MicroUsbPhone): void {
+		phone.useMicroUsb();
+		phone.recharge();
+	}
+}
+
+let microUsbPhoneRecharger = new MicroUsbPhoneRecharger();
+console.log("MicroUsb를 사용한 안드로이드 폰 충전");
+microUsbPhoneRecharger.dockPhone(new Android());
+console.log("MicroUsb를 사용한 아이폰 충전");
+microUsbPhoneRecharger.dockPhone(new LightningToMicroUsbAdapter(new Iphone));
+
+
+/*
+MicroUsb를 사용한 안드로이드 폰 충전
+MicroUsb connected
+Recharge started
+Recharge finished
+
+MicroUsb를 사용한 아이폰 충전
+MicroUsb connected
+Lightning connected
+Recharge started
+Recharge finished
+*/
+```
+
+### Class Adapter Pattern Implementation
+```ts
+export interface LightningPhone {
+	useLightning(): void;
+	recharge(): void;
+}
+
+// target
+export interface MicroUsbPhone {
+	useMicroUsb(): void;
+	recharge(): void;
+}
+
+// adaptee
+export class Iphone implements LightningPhone {
+	connector!: boolean;
+
+	useLightning(): void {
+		this.connector = true;
+		console.log("Lightning connected");
+	}
+
+  recharge(): void {
+		if (this.connector) {
+			console.log("Recharge started");
+			console.log("Recharge finished");
+		} else {
+			console.log("Connect Lightning first");
+		}
+	}
+}
+
+export class Android implements MicroUsbPhone {
+	connector!: boolean;
+
+	useMicroUsb(): void {
+		this.connector = true;
+		console.log("MicroUsb connected");
+	}
+
+  recharge(): void {
+		if (this.connector) {
+			console.log("Recharge started");
+			console.log("Recharge finished");
+		} else {
+			console.log("Connect MicroUsb first");
+		}
+	}
+}
+
+// adapter
+export class LightningToMicroUsbAdapter extends Iphone implements MicroUsbPhone {
+	// class adapter pattern
+		
+	useMicroUsb() {
+		console.log("MicroUsb connected");
+    // 상속받은 adaptee의 메소드 호출
+    super.useLightning();
+	}
+
+	recharge() {
+		// 상속받은 adaptee의 메소드 호출
+		super.recharge();
+	}
+}
+
+// client
+export class MicroUsbPhoneRecharger {
+	dockPhone(phone: MicroUsbPhone): void {
+		phone.useMicroUsb();
+		phone.recharge();
+	}
+}
+
+let microUsbPhoneRecharger = new MicroUsbPhoneRecharger();
+console.log("MicroUsb를 사용한 안드로이드 폰 충전");
+microUsbPhoneRecharger.dockPhone(new Android());
+console.log("MicroUsb를 사용한 아이폰 충전");
+microUsbPhoneRecharger.dockPhone(new LightningToMicroUsbAdapter());
+
+
+/*
+MicroUsb를 사용한 안드로이드 폰 충전
+MicroUsb connected
+Recharge started
+Recharge finished
+
+MicroUsb를 사용한 아이폰 충전
+MicroUsb connected
+Lightning connected
+Recharge started
+Recharge finished
+*/
+```
+
+### Consequences
+- Adapter Pattern을 사용하면 원래 함께 작동하지 않는 클래스 사이의 틈을 메울 수 있다.
