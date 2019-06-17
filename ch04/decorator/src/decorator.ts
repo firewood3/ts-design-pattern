@@ -3,36 +3,31 @@ abstract class UIComponent {
 }
 
 export class Text {
-	content: string = "";
+	color: string = "";
+	font: string = "";
+	size: string = "";
 
-	constructor(public c: string) {
-		this.content = c;
+	constructor(public content: string) {
 	}
 
 	setColor(color: string): void {
-		this.content += color + " ";
+		this.color = color;
 	}
 	setFont(font: string): void {
-		this.content += font + " ";
+		this.font = font;
 	}
 	setSize(size: string): void {
-		this.content += size + " ";
+		this.size = size;
 	}
 
 	draw(): void {
-		console.log(this.content);
+		console.log(`${this.content} / ${this.color} / ${this.font} / ${this.size}`);
 	}
 }
 
 export class TextComponent extends UIComponent {
-	texts: Text[] = new Array<Text>();
-
-	constructor() {
+	constructor(public texts: Text[]) {
 		super();
-		this.texts.push(new Text("1"));
-		this.texts.push(new Text("2"));
-		this.texts.push(new Text("3"));
-		this.texts.push(new Text("4"));
 	}
 
 	draw(): void {
@@ -67,6 +62,8 @@ export class ColorDecorator extends Decorator {
 	}
 
 	draw(): void {
+		console.log(this.component);
+		console.log(this.texts);
 			for (let text of this.texts) {
 					text.setColor(this.color);
 			}
@@ -109,52 +106,87 @@ export class SizeDecorator extends Decorator {
 	}
 }
 
-let decoratedComponent = new ColorDecorator(
+let texts = new Array<Text>();
+texts.push(new Text("1"));
+texts.push(new Text("2"));
+texts.push(new Text("3"));
+texts.push(new Text("4"));
+
+let textComponent = new TextComponent(texts);
+
+// Color, Font, Size 모두 Draw할 경우.
+let colorFontSize = new ColorDecorator(
 	new FontDecorator(
-		new SizeDecorator(
-			new TextComponent(),
-			'10px'
-		), 'sans-serif'
+		new SizeDecorator(textComponent, '16px'),
+		'sans-serif'
 	),
 	'black'
 );
+colorFontSize.draw();
 
-decoratedComponent.draw();
 
-abstract class AAA {
+let texts2 = new Array<Text>();
+texts2.push(new Text("5"));
+texts2.push(new Text("6"));
+texts2.push(new Text("7"));
+texts2.push(new Text("8"));
+
+let textComponent2 = new TextComponent(texts2);
+
+// Font, Size를 Draw할 경우
+let fontSize = new FontDecorator(
+	new SizeDecorator(textComponent2, '20px'),
+	'sans-serif'
+);
+fontSize.draw();
+
+/*
+1 / black / sans-serif / 16px
+2 / black / sans-serif / 16px
+3 / black / sans-serif / 16px
+4 / black / sans-serif / 16px
+5 /  / sans-serif / 20px
+6 /  / sans-serif / 20px
+7 /  / sans-serif / 20px
+8 /  / sans-serif / 20px
+*/
+
+
+export abstract class AAA {
+	abstract text():void;
+}
+
+export class BBB extends AAA {
+	text():void {
+
+	};
+}
+
+export class CCC extends AAA{
+	text():void {
+	};
+}
+
+export class DDD {
+	text():void {
+	};
+}
+
+export class EEE {
 
 }
 
-class BBB extends AAA {
+export class Test {
+	setBBB(aaa: BBB) {
 
+  }
 }
 
-class CCC extends AAA {
-	constructor(public bbb: BBB) {
-		super();
-	}
-}
+//TypeScript에서는 메소드 구조만 객체를 매개변수로 받을 수 있다.
+let test = new Test();
+test.setBBB(new BBB());
+test.setBBB(new CCC());
+test.setBBB(new DDD());
+// test.setBBB(new EEE()); // error
 
-class DDD extends CCC {
-
-}
-
-class EEE extends CCC {
-
-}
-
-class FFF extends AAA {
-
-}
-
-class ABC {
-	setABC(bbb: BBB) {
-
-	}
-}
-
-let ddd = new DDD(new EEE(new DDD(new BBB)));
-
-let abc = new ABC();
-abc.setABC(new FFF());
 

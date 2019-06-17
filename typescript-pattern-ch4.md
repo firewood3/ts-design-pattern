@@ -16,7 +16,7 @@ Structural Design Pattern은 객체의 구성에 대한 패턴이다.
 
 ## Composite Pattern
 - [Composite Pattern](https://en.wikipedia.org/wiki/Composite_pattern)은 같은 방식으로 작동하는 객체들의 그룹을 설명하는 패턴이다.
-- Composite는 객체를 부분-집합으로 표현되는 트리 구조로 "구성(compose)" 한다.
+- Composite는 객체를 부분-집합으로 표현되는 재귀적인 트리 구조로 "구성(compose)" 된다.
 - 예를들어 DOM에서 모든 element들은 Node 클래스의 인스턴스이고, 이 Node 인스턴스들은 tree 구조로 이루어진다.
 
 ### Diagram
@@ -148,8 +148,228 @@ Welcome to hello world
 ```
 
 ## Decorator Pattern
-데코레이터 패턴은 객체에 원래 기능은 손상시키지 않으면서 새로운 기능을 동적으로 더하는 패턴이다.
+- 데코레이터 패턴은 객체에 원래 기능은 손상시키지 않으면서 새로운 기능을 동적으로 더하는 패턴이다.
+- 데코레이터 패턴은 기능을 추가하는 작업을 하는 Composite로 작동된다.
+- 데코레이터 패턴은 재귀적으로 각 데코레이터의 기능을 수행한다.
 
 ### Diagram
+![decorator](/images/decorator-pattern.png)
+![decorator2](/images/decorator-pattern2.png)
 
 ### Participants
+- Component: 기능을 추가할 객체의 인터페이스를 정의
+<br>ex) UIComponent
+- ConcreteComponent: 추가적인 기능을 정의한다.
+<br>ex) TextComponent
+- Decorator: 데코레이터가될 Component의 참조를 정의하고 Component의 context를 관리한다.
+<br>ex) Decorator
+- ConcreteDecorator: Decorator를 상속받아 추가적인 기능을 정의한다.
+<br>ex) ColorDecorator, FontDecorator
+
+### Implementation
+```ts
+// Component
+abstract class UIComponent {
+	abstract draw(): void;
+}
+
+export class Text {
+	color: string = "";
+	font: string = "";
+	size: string = "";
+
+	constructor(public content: string) {
+	}
+
+	setColor(color: string): void {
+		this.color = color;
+	}
+	setFont(font: string): void {
+		this.font = font;
+	}
+	setSize(size: string): void {
+		this.size = size;
+	}
+
+	draw(): void {
+		console.log(`${this.content} / ${this.color} / ${this.font} / ${this.size}`);
+	}
+}
+
+// Concrete Component
+export class TextComponent extends UIComponent {
+	constructor(public texts: Text[]) {
+		super();
+	}
+
+	draw(): void {
+			for (let text of this.texts) {
+					text.draw();
+			}
+	}
+}
+
+// Decorator
+export class Decorator extends UIComponent {
+	constructor(
+			public component: TextComponent
+	) {
+			super();
+	}
+
+	get texts(): Text[] {
+			return this.component.texts;
+	}
+
+	draw(): void {
+			this.component.draw();
+	}
+}
+
+// Concrete Decorator
+export class ColorDecorator extends Decorator {
+	constructor(
+			component: TextComponent,
+			public color: string
+	) {
+			super(component);
+	}
+
+	draw(): void {
+		console.log(this.component);
+		console.log(this.texts);
+			for (let text of this.texts) {
+					text.setColor(this.color);
+			}
+
+			super.draw();
+	}
+}
+
+// Concrete Decorator
+export class FontDecorator extends Decorator {
+	constructor(
+			component: TextComponent,
+			public font: string
+	) {
+			super(component);
+	}
+
+	draw(): void {
+			for (let text of this.texts) {
+					text.setFont(this.font);
+			}
+
+			super.draw();
+	}
+}
+
+// Concrete Decorator
+export class SizeDecorator extends Decorator {
+	constructor(
+		component: TextComponent,
+		public size: string
+	) {
+		super(component);
+	}
+
+	draw(): void {
+		for (let text of this.texts) {
+			text.setSize(this.size);
+		}
+
+		super.draw();
+	}
+}
+
+// --- client ---
+
+let texts = new Array<Text>();
+texts.push(new Text("1"));
+texts.push(new Text("2"));
+texts.push(new Text("3"));
+texts.push(new Text("4"));
+
+let textComponent = new TextComponent(texts);
+
+// Color, Font, Size 모두 Draw할 경우.
+let colorFontSize = new ColorDecorator(
+	new FontDecorator(
+		new SizeDecorator(textComponent, '16px'),
+		'sans-serif'
+	),
+	'black'
+);
+colorFontSize.draw();
+
+
+let texts2 = new Array<Text>();
+texts2.push(new Text("5"));
+texts2.push(new Text("6"));
+texts2.push(new Text("7"));
+texts2.push(new Text("8"));
+
+let textComponent2 = new TextComponent(texts2);
+
+// Font, Size를 Draw할 경우
+let fontSize = new FontDecorator(
+	new SizeDecorator(textComponent2, '20px'),
+	'sans-serif'
+);
+fontSize.draw();
+
+/*
+1 / black / sans-serif / 16px
+2 / black / sans-serif / 16px
+3 / black / sans-serif / 16px
+4 / black / sans-serif / 16px
+5 /  / sans-serif / 20px
+6 /  / sans-serif / 20px
+7 /  / sans-serif / 20px
+8 /  / sans-serif / 20px
+*/
+
+
+export abstract class AAA {
+	abstract text():void;
+}
+
+export class BBB extends AAA {
+	text():void {
+
+	};
+}
+
+export class CCC extends AAA{
+	text():void {
+	};
+}
+
+export class DDD {
+	text():void {
+	};
+}
+
+export class EEE {
+
+}
+
+export class Test {
+	setBBB(aaa: BBB) {
+
+  }
+}
+
+//TypeScript에서는 메소드 구조만 객체를 매개변수로 받을 수 있다.
+let test = new Test();
+test.setBBB(new BBB());
+test.setBBB(new CCC());
+test.setBBB(new DDD());
+// test.setBBB(new EEE()); // error
+
+```
+
+### Consequences
+- 데코레이터 패턴의 핵심은 기능을 동적으로 추가하는 것이다.
+- 제대로 작성된 데코레이터 패턴은 데코레이터 호출 순서에 상관없이 항상 잘 작동해야 한다.
+
