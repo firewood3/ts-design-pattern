@@ -707,7 +707,7 @@ textElement.render();
 - "Client" 는 "Implementer"의 세부사항에 대해서 알 필요가 없기때문에 시스템의 안정성 및 건강한 Dependency 구조를 설계하는데도 도움이 된다.
 
 ## Façade Pattern
-- 퍼사드 패턴은 Subsystem을 조직화하고 통일화된 상위 계층의 인터페이스를 제공한다.
+- 퍼사드 패턴은 Subsystem을 조직화하고 통일화된 상위 계층의 인터페이스(higher-level interface)를 제공한다.
 - 모듈형 라이브러리를 사용할때 퍼사드 패턴을 사용하면 프로젝트를 쉽게 유지 관리 할 수 있다.
 
 ### Diagram
@@ -766,6 +766,8 @@ class ComputerFacade {
 }
 
 let computerFacade = new ComputerFacade();
+// "Client"는 복잡한 Cpu / Memory / Harddisk를 사용하지않고 
+// Facade의 Higher-level interface인 start() interface를 사용하므로써 컴퓨터 시스템을 구동시킬 수 있다.
 computerFacade.start();
 ```
 
