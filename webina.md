@@ -19,7 +19,7 @@
 ## What is the 1st Session about?
 다룰것: 멀티모델 GDB의 중요성
 배울것: 어떻게 GDBMS가 기업과 시설의 비즈니스에 상당한 발전에 도움을 주는지 배우게 될 것이다.
-준비한것: 라이브 데모를 통해 AgensGraph 솔루션이 사용되는지 확인할 것이다.
+준비한것: 라이브 데모를 통해 AgensGraph 솔루션이 어떻게 사용되는지 확인할 것이다.
 
 ## Why should I join the Webinar?
 첫번째 세선에서는 AgensGraph에 대해 소개한다. 다음에는 다른 주제를 설명한다.
