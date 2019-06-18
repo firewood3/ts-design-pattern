@@ -611,6 +611,7 @@ Recharge finished
 - Bridge Pattern은 구현부에서 추상층을 분리하는 패턴이다. 구현부에서 추상층이 분리되면 구현부에 각자 독립적인 추상층을 추가하여 독립적으로 변형할 수 있게 된다. 또한 추상층을 변경할 수도 있다.
 
 ### Diagram
+![bridge-pattern2](/images/bridge-pattern2.png)
 ![bridge-pattern3](/images/bridge-pattern3.png)
 - Abscraction1은 하나의 상속(Abstraction)과 분리된 인터페이스(Implementer)를 가지는 구조로 구성된다.
 - Abscraction1에서 operation()은 상속으로부터 실행되고, imp.operationImp()는 인터페이스로써 실행된다.
