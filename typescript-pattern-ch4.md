@@ -777,3 +777,145 @@ computerFacade.start();
 - 파사드 패턴을 사용하므로써, 시스템의 구조를 직관적이고 깨끗하게 유지할 수 있다.
 
 ## Flyweight Pattern
+- [flyweight](https://en.wikipedia.org/wiki/Flyweight_pattern)는 데이터를 저장하고 공유하므로써 메모리 사용을 최소화하는 객체이다.
+- 객체의 생성 비용이 많을 경우 이 패턴을 사용하면 메모리 효율성과 퍼포먼스 향상에 도움이 될 수 있다.
+
+### Diagram
+![flyweight-pattern3](/images/flyweight-pattern3.png)
+
+- client는 Flyweight를 생성하거나 공유받기 위해 FlyweightFactory를 참조한다.
+- client는 Flyweight 인터페이스를 Fleyweight의 메소드에 접근하며, 매개변수로 Flyweight에게 변화 가능한(variant state) 상태를 전달한다.(flyweight.operation(extrinsicState))
+- Flyweight 인터페이스를 구현한 Flyweight1 클래스는 불변의 상태(invariant state)을 저장하고 공유한다.
+
+### Snow Example
+![flyweight-pattern1](/images/flyweight-pattern1.png)
+![flyweight-pattern2](/images/flyweight-pattern2.png)
+
+- 캔버스에서 100개의 눈송이가 떨어지는 것을 프로그래밍 할때, 눈송이의 스타일는 캐싱해두고 눈송이의 좌표만 랜더링 해서 구현할 수 있다.
+- invariant state => 눈송이 스타일 ex) image path
+- variant state => 눈송이 좌표 ex) x,y,angle
+
+### Participant
+- Flyweight: flyweight 객체를 정의
+- Flyweight factory: flyweight 객체를 생성하고 관리(flyweight를 캐싱하는 팩토리)
+- Client: 대상의 상태(invariant state)를 저장하고 flyweight 객체를 사용한다.
+
+### Pattern Scope
+- Flyweight Pattern은 메모리 효율성과 성능을 향상시키기 위한 패턴이다.
+- Flyweight Pattern 패턴을 구현할 때는 invariant state와 variant state 관리에 중점을 두어야 한다.
+
+### Implementation
+```ts
+// js의 의존 관계 선언 패턴: 함수나 모듈 최 상단에 의존관계가 있는 모듈을 선언하는 것.
+const hasOwnProperty = Object.prototype.hasOwnProperty;
+
+export class Image {
+	constructor(url: string) { }
+}
+
+// Flyweight 객체
+export class Snowflake {
+	// invariant state
+	image: Image;
+
+	constructor(
+		public style: string
+	) {
+		let url = style + '.png';
+		this.image = new Image(url);
+	}
+
+	// x, y, angle => variant state
+	render(x: number, y: number, angle: number): void {
+		// ... 
+		console.log(`Style ${this.style}, x: ${x}, y: ${y}, angle: ${angle}`);
+	}
+}
+
+// js의 메모제이션(Memoization) 패턴은 함수에 cache 프로퍼티를 사용하여 캐싱함
+// Flyweight 객체를 매번 만들지 않고 캐싱하는 팩토리
+export class SnowFlakeFactory {
+	// style을 key로 하고 Snowflake 객체를 값으로 하는 맵. 
+	// A, B, C 스타일의 Snowflake가 캐싱되어 있음.
+	cache: {
+		[style: string]: Snowflake;
+	} = {};
+
+	get(style: string): Snowflake {
+		// 전역 변수를 지역변수화 하여 사용하고 있음(js의 의존관계선언 패턴)
+		let cache = this.cache;
+		let snowflake: Snowflake;
+
+		// 이미 저장되어있는 스타일의 Snowflake는 new를 통해 새로 생성하지 않고 캐싱되어 있는 Snowflake를 캐시에서 꺼내 사용함
+		// Snowflake는 get 함수를 호출할때마다 생성되는 것이 아니고, 스타일의 갯수만큼만 생성됨.
+		if (hasOwnProperty.call(cache, style)) {
+			snowflake = cache[style];
+			console.log('cached snowflake');
+		} else {
+			snowflake = new Snowflake(style);
+			cache[style] = snowflake;
+			console.log('new snowflake');
+		}
+
+		return snowflake;
+	}
+}
+
+const SNOW_STYLES = ['A', 'B', 'C'];
+
+// client
+export class Sky {
+	constructor(
+		public width: number,
+		public height: number
+	) { }
+
+	snow(factory: SnowFlakeFactory, count: number) {
+		let stylesCount = SNOW_STYLES.length;
+		
+		for (let i = 0; i < count; i++) {
+			let style = SNOW_STYLES[getRandomInteger(stylesCount)];
+			let snowflake = factory.get(style);
+
+			let x = getRandomInteger(this.width);
+			let y = getRandomInteger(this.height);
+
+			let angle = getRandomInteger(60);
+
+			snowflake.render(x, y, angle);
+		}
+	}
+}
+
+function getRandomInteger(max: number): number {
+	return Math.floor(Math.random() * max);
+}
+
+let sky = new Sky(10,10);
+sky.snow(new SnowFlakeFactory, 100);
+
+/*
+
+new snowflake
+Style C, x: 1, y: 2, angle: 59
+cached snowflake
+Style C, x: 4, y: 2, angle: 44
+cached snowflake
+Style C, x: 0, y: 8, angle: 10
+new snowflake
+Style B, x: 3, y: 2, angle: 24
+cached snowflake
+Style B, x: 8, y: 4, angle: 32
+cached snowflake
+Style C, x: 6, y: 7, angle: 13
+new snowflake
+Style A, x: 7, y: 4, angle: 38
+cached snowflake
+Style C, x: 6, y: 3, angle: 13
+cached snowflake
+
+*/
+```
+
+### Consequences
+- Flyweight 패턴은 한 시스템에서 관련된 객체의 최종 숫자를 줄여주므로써, 메모리를 절약할 수 있다.

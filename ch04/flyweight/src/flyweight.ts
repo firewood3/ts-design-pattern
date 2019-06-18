@@ -7,6 +7,7 @@ export class Image {
 
 // Flyweight 객체
 export class Snowflake {
+	// invariant state
 	image: Image;
 
 	constructor(
@@ -16,6 +17,7 @@ export class Snowflake {
 		this.image = new Image(url);
 	}
 
+	// x, y, angle => variant state
 	render(x: number, y: number, angle: number): void {
 		// ... 
 		console.log(`Style ${this.style}, x: ${x}, y: ${y}, angle: ${angle}`);
@@ -52,6 +54,7 @@ export class SnowFlakeFactory {
 
 const SNOW_STYLES = ['A', 'B', 'C'];
 
+// client
 export class Sky {
 	constructor(
 		public width: number,
@@ -83,6 +86,7 @@ let sky = new Sky(10,10);
 sky.snow(new SnowFlakeFactory, 100);
 
 /*
+
 new snowflake
 Style C, x: 1, y: 2, angle: 59
 cached snowflake

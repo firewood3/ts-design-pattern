@@ -15,6 +15,7 @@ var Snowflake = /** @class */ (function () {
         var url = style + '.png';
         this.image = new Image(url);
     }
+    // x, y, angle => variant state
     Snowflake.prototype.render = function (x, y, angle) {
         // ... 
         console.log("Style " + this.style + ", x: " + x + ", y: " + y + ", angle: " + angle);
@@ -50,6 +51,7 @@ var SnowFlakeFactory = /** @class */ (function () {
 }());
 exports.SnowFlakeFactory = SnowFlakeFactory;
 var SNOW_STYLES = ['A', 'B', 'C'];
+// client
 var Sky = /** @class */ (function () {
     function Sky(width, height) {
         this.width = width;
@@ -75,6 +77,7 @@ function getRandomInteger(max) {
 var sky = new Sky(10, 10);
 sky.snow(new SnowFlakeFactory, 100);
 /*
+
 new snowflake
 Style C, x: 1, y: 2, angle: 59
 cached snowflake
