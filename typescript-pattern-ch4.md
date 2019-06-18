@@ -919,3 +919,37 @@ cached snowflake
 
 ### Consequences
 - Flyweight 패턴은 한 시스템에서 관련된 객체의 최종 숫자를 줄여주므로써, 메모리를 절약할 수 있다.
+
+
+## Proxy Pattern
+- 프록시 패턴은 프로그램이 접근 객체에 대해 알고자 하거나 접근 객체의 행동에 개입하기위해 사용된다.
+- [프록시](https://en.wikipedia.org/wiki/Proxy_pattern)는 "real object"가 구현한 인터페이스를 구현한 클래스이다.
+- 프록시는 "Client"가 "real object"에 접근하기 위해 호출하는 "Agent object"이다.
+- 프록시와 "real object"는 동일한 인터페이스를 구현하므로, 프록시 객체의 사용은 "real object"와 비슷하다.
+- 프록시를 사용하면 추가적인 기능을 제공할 수 있다.
+	- real object의 operation이 자원 집중적인 경우 캐싱
+	- real object의 앞선 상태 검사
+
+### Possible usage scenarios
+프록시 패턴은 목적에 따라 다음과 같이 구분된다.
+- Remote Proxy: 데이터나 원격 서버같은 "원격 객체"를 조작하기 위한 프록시
+<br> ex) ATM의 실행에서 ATM은 원격 서버에 있는 은행정보를 "proxy object"로 보유할 수 있다.
+- Virtual Proxy: 요청시 로드가 필요한 "비용이 많이 드는 객체"를 관리하기 위한 프록시
+- Protection Proxy: 권한 인증이나 유효성 검사를 위한 "타겟 객체의 접근"을 관리하는 프록시
+- Smart Proxy: 타겟 객체에 접근할 때 "추가적인 명령을 수행"하는 프록시
+
+### Diagram
+![proxy-pattern](/images/proxy-pattern.png)
+
+
+
+### Pattern Scope
+- Adapter Pattern과 비슷하지만, Adapter Pattern은 호환되지 않는 인터페이스를 변형하기 위한 것이 목적이라면, Proxy Pattern은 "real obejct"의 접근에 개입하는 것이 목적이다.
+- Proxy Pattern을 사용하면 "real object"의 메소드나 값을 변경할 수도 있지만 이것은 대부분 뒤로 가거나 에러처리의 목적의 경우가 많다.
+
+### Consequences
+- Proxy Pattern은 대부분 특정 객체나 진짜 객체의 명령을 캡슐화하는 목적으로 사용된다.
+
+
+
+
