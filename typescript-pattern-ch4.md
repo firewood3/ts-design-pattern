@@ -611,11 +611,16 @@ Recharge finished
 - Bridge Pattern은 구현부에서 추상층을 분리하는 패턴이다. 구현부에서 추상층이 분리되면 구현부에 각자 독립적인 추상층을 추가하여 독립적으로 변형할 수 있게 된다. 또한 추상층을 변경할 수도 있다.
 
 ### Diagram
+![bridge-pattern3](/images/bridge-pattern3.png)
+- Abscraction1은 하나의 상속(Abstraction)과 분리된 인터페이스(Implementer)를 가지는 구조로 구성된다.
+- Abscraction1에서 operation()은 상속으로부터 실행되고, imp.operationImp()는 인터페이스로써 실행된다.
+
+
+### UIComponent Example Diagram
 ![bridge-pattern](/images/bridge-pattern.png)
 - UIComponent를 SVG나 Canvas에 그릴 수 있을 경우, UIComponent와 UIToolkit간의 연결을 브릿지로 하여 UIComponent는 UIToolKit의 구현체를 추상화하여 분리할 수 있다.
 
 ### Participants
-![bridge-pattern2](/images/bridge-pattern2.png)
 - Abstraction: Implementer의 참조를 가지고 있는 인터페이스
 <br>ex) UIElement
 - Refined abstraction: Abstraction의 구현체, 독립적인 추상층을 가지는 구현부
