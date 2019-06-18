@@ -20,7 +20,12 @@ Structural Design Pattern은 객체의 구성에 대한 패턴이다.
 - 예를들어 DOM에서 모든 element들은 Node 클래스의 인스턴스이고, 이 Node 인스턴스들은 tree 구조로 이루어진다.
 
 ### Diagram
-![composite pattern 2](/images/composite-pattern2.png)
+![composite pattern 3](/images/composite-pattern3.png)
+
+- Client 클래스는 Leaf와 Composite의 참조를 직접적으로 갖지 않는 대신, Common Component의 참조를 갖는다.
+- Client는 Common Component 참조를 통해 Leaf와 Composite를 다룬다.
+- Leaf 클래스는 자식을 갖지 않고 Component 인터페이스를 직접 실행한다.
+- Compostie 클래스는 자식 Component의 객체들(children)을 보유하고 자식 메소드를 사용한다.(child.operation())
 
 ### DOM structure example
 ![composite pattern](/images/composite-pattern.png)
@@ -146,14 +151,21 @@ Welcome to hello world
 
 */
 ```
+### Consequences
+- Component Pattern에서 "primitive object(Leaf)"와 "Composite object"는 Component 인터페이스를 공유하기 때문에 개발자는 Composite 구조를 쉽게 건설할 수 있다.
+- Component Pattern은 Components의 재귀적인 작업을 보다 쉽게 처리할 수 있다.
+- 대부분의 Components에서, Child Component와 Parent Component가 호환가능하므로 새로운 Component를 기존의 Components에 쉽게 추가할 수 있다.
 
 ## Decorator Pattern
 - 데코레이터 패턴은 객체에 원래 기능은 손상시키지 않으면서 새로운 기능을 동적으로 더하는 패턴이다.
-- 데코레이터 패턴은 기능을 추가하는 작업을 하는 Composite로 작동된다.
-- 데코레이터 패턴은 재귀적으로 각 데코레이터의 기능을 수행한다.
 
 ### Diagram
 ![decorator](/images/decorator-pattern.png)
+
+- 추상 Decorator Class는 Component를 꾸미기위해 Component의 참조를 보유한다.
+- Decorator는 Component의 메소드를 사용하여 Component에 요청할 수 있다.(Component.operation())
+- 서브 클래스인 Decorator1과 Decorator2는 추상 Decorator에 작업을 추가하여 추가적인 행동을 실행할 수 있다.(addBehavior())
+
 ![decorator2](/images/decorator-pattern2.png)
 
 ### Participants
@@ -236,8 +248,6 @@ export class ColorDecorator extends Decorator {
 	}
 
 	draw(): void {
-		console.log(this.component);
-		console.log(this.texts);
 			for (let text of this.texts) {
 					text.setColor(this.color);
 			}
