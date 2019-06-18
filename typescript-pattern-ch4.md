@@ -776,3 +776,4 @@ computerFacade.start();
 - "Facade"는 "Client"가 적절한 "Subsystems"에게 명령들을 전달할 수 있도록 한다.
 - 파사드 패턴을 사용하므로써, 시스템의 구조를 직관적이고 깨끗하게 유지할 수 있다.
 
+## Flyweight Pattern
