@@ -1,96 +1,54 @@
-
-
-interface Storage {
-    get<T>(key: string): Promise<T>;
-    set<T>(key: string, value: T): Promise<void>;
+// Subject
+interface Image {
+  displayImage(): void;
 }
 
-interface Permission {
-    write: boolean;
-    read: boolean;
-}
-// @ts-ignore
-class IndexedDBStorage implements Storage {
-    // @ts-ignore
-    private dbPromise: Promise<IDBDatabase>;
+// RealSubject
+export class RealImage implements Image {
+  constructor(
+      private filename: string
+  ) { 
+		this.loadImageFromDisk();
+	}
 
-    constructor(
-        public name: string,
-        public permission: Permission,
-        public storeName = 'default'
-    ) { }
-
-    private get dbReady(): Promise<IDBDatabase> {
-        if (!this.dbPromise) {
-            // @ts-ignore
-            this.dbPromise = new Promise<IDBDatabase>((resolve, reject) => {
-                let request = indexedDB.open(name);
-
-                request.onsuccess = event => {
-                    resolve(request.result);
-                };
-
-                request.onerror = event => {
-                    reject(request.error);
-                };
-            });
-        }
-
-        return this.dbPromise;
-    }
-
-    get<T>(key: string): Promise<T> {
-        if (!this.permission.read) {
-            // @ts-ignore
-            return Promise.reject<T>(new Error('Permission denied'));
-        }
-
-        return this
-            .dbReady
-            // @ts-ignore
-            .then(db => new Promise<T>((resolve, reject) => {
-                let transaction = db.transaction(this.storeName);
-                let store = transaction.objectStore(this.storeName);
-
-                let request = store.get(key);
-
-                request.onsuccess = event => {
-                    resolve(request.result);
-                };
-
-                request.onerror = event => {
-                    reject(request.error);
-                };
-            }));
-    }
-
-    set<T>(key: string, value: T): Promise<void> {
-        if (!this.permission.write) {
-            // @ts-ignore
-            return Promise.reject(new Error('Permission denied'));
-        }
-
-        return this
-            .dbReady
-            // @ts-ignore
-            .then(db => new Promise<void>((resolve, reject) => {
-                let transaction = db.transaction(this.storeName, 'readwrite');
-                let store = transaction.objectStore(this.storeName);
-                // @ts-ignore
-                let request = store.put(key, value);
-
-                request.onsuccess = event => {
-                    resolve();
-                };
-
-                request.onerror = event => {
-                    reject(request.error);
-                };
-            }));
-    }
+  loadImageFromDisk(): void {
+		console.log("Loading: " + this.filename);
+	}
+	
+	displayImage(): void {
+		console.log("Displaying: " + this.filename);
+	}
 }
 
-let storage = new IndexedDBStorage('foo', {
-    read: true,
-    write: true
-});
+// Proxy
+export class ProxyImage implements Image {
+	image!: Image;
+
+	constructor(
+		private filename: string
+	) { }
+
+	displayImage() {
+		if (!this.image) {
+			this.image = new RealImage(this.filename);
+		}
+
+		this.image.displayImage();
+	}
+}
+
+// Client
+export class ImageClient {
+	display() {
+		let image = new ProxyImage("Photo1");
+		image.displayImage();
+	}
+}
+
+let imageClinet = new ImageClient();
+imageClinet.display();
+
+/*
+Loading: Photo1
+Displaying: Photo1
+*/

@@ -953,11 +953,65 @@ cached snowflake
 - Proxy Pattern을 사용하면 "real object"의 메소드나 값을 변경할 수도 있지만 이것은 대부분 뒤로 가거나 에러처리의 목적의 경우가 많다.
 
 ### Implementation
+```ts
+// Subject
+interface Image {
+  displayImage(): void;
+}
 
+// RealSubject
+export class RealImage implements Image {
+  constructor(
+      private filename: string
+  ) { 
+		this.loadImageFromDisk();
+	}
+
+  loadImageFromDisk(): void {
+		console.log("Loading: " + this.filename);
+	}
+	
+	displayImage(): void {
+		console.log("Displaying: " + this.filename);
+	}
+}
+
+// Proxy
+export class ProxyImage implements Image {
+	image!: Image;
+
+	constructor(
+		private filename: string
+	) { }
+
+	displayImage() {
+		if (!this.image) {
+			this.image = new RealImage(this.filename);
+		}
+
+		this.image.displayImage();
+	}
+}
+
+// Client
+export class ImageClient {
+	display() {
+		let image = new ProxyImage("Photo1");
+		image.displayImage();
+	}
+}
+
+let imageClinet = new ImageClient();
+imageClinet.display();
+
+/*
+Loading: Photo1
+Displaying: Photo1
+*/
+```
 
 ### Consequences
-- Proxy Pattern은 대부분 특정 객체나 진짜 객체의 명령을 캡슐화하는 목적으로 사용된다.
-
+- Proxy Pattern은 대부분 특정 객체나 진짜 객체의 명령을 캡슐화하는 목적으로 사용된다. 그러면 Client의 부담을 줄일 수 있다.
 
 
 
