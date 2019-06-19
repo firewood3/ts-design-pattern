@@ -50,9 +50,3 @@ class Caretaker {
 	}
 }
 
-let caretaker = new Caretaker();
-caretaker.test();
-
-
-
-

@@ -38,5 +38,3 @@ class Caretaker {
         this.restore(); // originator.state ==> { state: 'state3' }
     }
 }
-let caretaker = new Caretaker();
-caretaker.test();
