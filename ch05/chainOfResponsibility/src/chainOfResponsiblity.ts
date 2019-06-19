@@ -65,8 +65,6 @@ export abstract class Logger {
 	}
 
 	message(msg: string, priority: LogLevel) {
-		console.log(this.mask);
-		console.log(priority);
 		if (priority <= this.mask) {
 			this.writeMessage(msg);
 		}

@@ -16,6 +16,7 @@ behavioral patterns
 - 목적에 따라 수행해야할 많은 시나리오가 있을 때 이 패턴을 사용할 수 있다.
 - 책임연쇄 패턴은 "command object"와 "processing objects"로 이루어 진다.
 - "처리 객체"는 "명령 객체"를 처리하는 로직을 가지고, 다음 "처리객체"로 "명령 객체"를 보낸다.(Chain)
+- 특정 "처리 객체"가 처리할 수 없는 "명령"은 다음 "처리 객체"로 넘겨진다.(Chain)
 - 책임 연쇄 패턴은 if-else if ... else .. else ... endif 문의 객체 지향 버전이다.
 
 ### Diagram
