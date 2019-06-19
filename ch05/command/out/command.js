@@ -59,6 +59,7 @@ var InsertCommand = /** @class */ (function (_super) {
     };
     return InsertCommand;
 }(TextCommand));
+// invoker
 var TextCommandInvoker = /** @class */ (function () {
     function TextCommandInvoker(replaceCommand, insertCommand) {
         this.replaceCommand = replaceCommand;
@@ -72,6 +73,7 @@ var TextCommandInvoker = /** @class */ (function () {
     };
     return TextCommandInvoker;
 }());
+// client
 var Client = /** @class */ (function () {
     function Client() {
         this.context = new TextContext();

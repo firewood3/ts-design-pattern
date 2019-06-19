@@ -40,6 +40,7 @@ class InsertCommand extends TextCommand {
     }
 }
 
+// invoker
 class TextCommandInvoker {
     constructor(
         private replaceCommand: ReplaceCommand,
@@ -55,6 +56,7 @@ class TextCommandInvoker {
     }
 }
 
+// client
 class Client {
     context: TextContext;
     textCommandInvoker: TextCommandInvoker;
