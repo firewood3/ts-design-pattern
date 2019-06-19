@@ -338,18 +338,76 @@ awesome the content
 ## Memento Pattern
 - Memento Pattern은 객체를 이전의 상태로 되돌릴 수 있도록 하는 패턴이다.(rollback)
 
-### Diagram
-
-### Participants
+### Diagram & Participants
+![memento-pattern](/images/memento-pattern.png)
+- Memento: 객체의 상태를 저장하고 회복 메소드(restore)를 정의
+- Originator: 내부 상태 저장이 필요한 객체
+- Caretaker: Memento들을 관리하고 Originator의 상태를 회복시키는 객체
 
 ### Pattern Scope
+- Memento Pattern은 상태의 저장이나 회복을 Memento를 사용하여 Caretaker나 Originator로부터 분리한다.
+- 상태 저장이나 회복이 간단한 프로세스에서 이미 decupling로직을 가지고 있다면,분리된 memento를 갖는 것이 별로 도움이 되지 않을 수 있다.
 
 ### Implementation
 [ES6 Object.assign()](https://googlechrome.github.io/samples/object-assign-es6/)
 [Prototype Array Shift](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/shift)
 
+```ts
+interface State { }
 
+class Memento {
+	private state: State;
+
+	constructor(state: State) {
+		this.state = Object.assign({} as State, state);
+	}
+
+	restore(state: State): void {
+		Object.assign(state, this.state);
+	}
+}
+
+class Originator {
+	state!: State;
+
+	get memento(): Memento {
+		return new Memento(this.state);
+	}
+
+	set memento(memento: Memento) {
+		memento.restore(this.state);
+	}
+}
+
+class Caretaker {
+	originator!: Originator;
+	history: Memento[] = [];
+
+	save(): void {
+		this.history.push(this.originator.memento);
+	}
+
+	restore(): void {
+		this.originator.memento = this.history.shift() as Memento;
+	}
+
+	test() {
+		this.originator = new Originator();
+		this.originator.state = {state: 'state1'}; // originator.state ==> { state: 'state1' }
+		this.originator.state = {state: 'state2'}; // originator.state ==> { state: 'state2' }
+		this.save();
+		this.originator.state = {state: 'state3'};  // originator.state ==> { state: 'state3' }
+		this.save();
+		this.originator.state = {state: 'state4'}; // originator.state ==> { state: 'state4' }
+		this.restore(); // originator.state ==> { state: 'state2' }
+		this.originator.state = {state: 'state5'}; // originator.state ==> { state: 'state5' }
+		this.restore(); // originator.state ==> { state: 'state3' }
+	}
+}
+```
 
 ### Consequences
+- Memento Pattern은 originator의 상태를 관리하는것을 쉽게 해주므로써, 저장과 복원하는 상태의 확장을 가능하게 한다.
 
+## 
 
