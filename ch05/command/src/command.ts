@@ -5,6 +5,9 @@ class TextContext {
     print() {
      console.log(this.content);
     }
+
+    // 책의 예제에서는 Receiver 부분에 action을 정의하지 않고 
+    // Command 부분에서 처리하였다.
 }
 
 // Command

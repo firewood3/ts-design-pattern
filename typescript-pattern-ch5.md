@@ -13,7 +13,7 @@ behavioral patterns
 
 
 ## Chain of Responsibility pattern
-- 목적에 따라 수행해야할 많은 시나리오가 있을 때 이 패턴을 사용할 수 있다.
+- Chain of Responsibility pattern은 특정 명령에 대한 로직 처리를 체인형식으로 수행하는 패턴이다.
 - 책임연쇄 패턴은 "command object"와 "processing objects"로 이루어 진다.
 - "처리 객체"는 "명령 객체"를 처리하는 로직을 가지고, 다음 "처리객체"로 "명령 객체"를 보낸다.(Chain)
 - 특정 "처리 객체"가 처리할 수 없는 "명령"은 다음 "처리 객체"로 넘겨진다.(Chain)
@@ -29,6 +29,9 @@ behavioral patterns
 - Handler: next라는 다음 Handler를 지정하는 메소드와 명령을 받아 처리되는 로직을 정의하는 인터페이스
 - Concrete Handler: Handler를 구현한 객체
 - Client: Handler 체인에게 명령을 전달
+
+### Pattern Scope
+- 목적에 따라 수행해야할 많은 시나리오가 있을 때 이 패턴을 사용할 수 있다.
 
 ### Implementation
 ```ts
@@ -219,3 +222,130 @@ biu();
 - Client의 명령을 처리하는데 상당한 유연성을 제공한다.
 
 ## Command Pattern
+- Command Pattern은 타겟 객체(receiver)를 조작하는 실행가능한 명령(Command)를 캡슐화(Invoker에서) 하는 패턴이다.
+
+### Diagram
+![command-pattern](/images/command-pattern.png)
+
+- Invoker는 Command 인터페이스의 수행(command.execute())을 통해 Reciver를 조작한다.
+- Invoker는 각 Command에 대해 독립적이다.
+- Command1 클래스는 Command 인터페이스을 사용하여 receiver에게 요청한다.(receiver1.action1())
+
+### Participants
+- Command: Receiver를 조작하는 일반적인 인터페이스를 제공한다.
+- Concrete Command: Command를 구현하며 관련된 자료구조에 대한 특정 행동을 수행한다.
+- Receiver: 조작하길 원하는 타갯 객체
+- Invoker: concrete command를 수행한다.
+- Client: command와 receiver를 사용한다.
+
+### Pattern Scope
+- Command Pattern의 중요한 점은 명령부분과 receiver의 상태를 저장하는 부분을 분리해냈다는 것이다.
+
+### Implemetation
+```ts
+// Context, Receiver
+class TextContext {
+    content = 'text content';
+
+    print() {
+     console.log(this.content);
+    }
+
+    // 책의 예제에서는 Receiver 부분에 action을 정의하지 않고 
+    // Command 부분에서 처리하였다.
+}
+
+// Command
+abstract class TextCommand {
+    constructor(
+        public context: TextContext
+    ) { }
+
+    abstract execute(...args: any[]): void;
+}
+
+// ConcreteCommand
+class ReplaceCommand extends TextCommand {
+    execute(index: number, length: number, text: string): void {
+        let content = this.context.content;
+
+        this.context.content =
+            content.substr(0, index) +
+            text +
+            content.substr(index + length);
+    }
+}
+
+// ConcreteCommand
+class InsertCommand extends TextCommand {
+    execute(index: number, text: string): void {
+        let content = this.context.content;
+
+        this.context.content =
+            content.substr(0, index) +
+            text +
+            content.substr(index);
+    }
+}
+
+// invoker
+class TextCommandInvoker {
+    constructor(
+        private replaceCommand: ReplaceCommand,
+        private insertCommand: InsertCommand
+    ) { }
+
+    replace(index: number, length: number, text: string): void {
+        this.replaceCommand.execute(index, length, text);
+    }
+    
+    insert(index: number, text: string): void {
+        this.insertCommand.execute(index, text);
+    }
+}
+
+// client
+class Client {
+    context: TextContext;
+    textCommandInvoker: TextCommandInvoker;
+
+    constructor() {
+        this.context = new TextContext();
+        this.textCommandInvoker = new TextCommandInvoker(new ReplaceCommand(this.context), new InsertCommand(this.context));
+    }
+    
+    test() {
+        this.context.print();
+        this.textCommandInvoker.replace(0, 4, 'the');
+        this.context.print();
+        this.textCommandInvoker.insert(0, 'awesome ');
+        this.context.print();
+    }
+}
+
+let client = new Client();
+client.test();
+/*
+text content
+the content
+awesome the content
+*/
+```
+
+### Consequences
+- Client에서 receiver를 조작할 때, Invoker(receiver에 접근할 수 없는)를 통해 Command를 수행하므로, Receiver에 접근하는 의존성을 낮추고 Receiver를 조작하는 확장성과 안정성을 높일 수 있다.
+
+## Memento Pattern
+- Memento Pattern은 객체를 이전의 상태로 되돌릴 수 있도록 하는 패턴이다.(rollback)
+
+### Diagram
+
+### Participants
+
+### Pattern Scope
+
+### Implementation
+
+### Consequences
+
+

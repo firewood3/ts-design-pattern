@@ -79,6 +79,7 @@ export abstract class Logger {
 export class StdoutLogger extends Logger {
 	constructor(mask: LogLevel) {
 		super();
+		//@ts-ignore
 		super.mask = mask;
 	}
 
@@ -90,6 +91,7 @@ export class StdoutLogger extends Logger {
 export class EmailLogger extends Logger {
 	constructor(mask: LogLevel) {
 		super();
+		//@ts-ignore
 		super.mask = mask;
 	}
 
@@ -101,6 +103,7 @@ export class EmailLogger extends Logger {
 export class StderrLogger extends Logger {
 	constructor(mask: LogLevel) {
 		super();
+		//@ts-ignore
 		super.mask = mask;
 	}
 
