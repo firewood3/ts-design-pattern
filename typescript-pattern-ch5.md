@@ -345,6 +345,10 @@ awesome the content
 ### Pattern Scope
 
 ### Implementation
+[ES6 Object.assign()](https://googlechrome.github.io/samples/object-assign-es6/)
+[Prototype Array Shift](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/shift)
+
+
 
 ### Consequences
 
