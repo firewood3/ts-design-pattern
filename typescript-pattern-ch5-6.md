@@ -589,6 +589,7 @@ Total due: 600
 
 ### Consequences
 - Strategy pattern은 Context에 알고리즘의 추가를 선택이고 쉽게 만든다.
+- Graph를 분석 알고리즘을 사용자가 선택적으로 사용할 수 있도록 Strategy 패턴 적용
 
 ## Observer Pattern 
 - 상태 전파를 받고자하는 Client는 Observer를 Subject객체에 등록하고, Subject 객체는 next()함수를 통해 등록된 Observer에게 상태를 전파하는 패턴
