@@ -5,12 +5,12 @@
 - behavioal Design Pattern은 Structural Design Pattern과 비교하면 보다 쉽고 좀더 직관적이다.
 
 behavioral patterns
-- Chain of Responsibility: 다른 범위의 행동을 조직한다.
-- Command: 내부의 캡슐화된 문맥으로부터 명령들을 드러낸다.
-- Memento: 세부적인 실행을 드러내는 것 없이 상태관리접을을 제공하는것.
-- Iterator:
-- Mediator:
-- 
+- Chain of Responsibility: 다른 범위의 행동을 조직한다. 특정 명령(command object)에 대한 로직 처리(processing object)를 체인형식으로 수행하는 패턴이다.
+- Command: 타겟 객체(receiver)를 조작하는 실행가능한 명령(Command)를 캡슐화(Invoker에서) 하는 패턴이다.
+- Memento: 객체를 이전의 상태로 되돌릴 수 있도록 하는 기능을 제공하는 패턴이다.(rollback)
+- Iterator: next()와 hasNext()메소드를 가지는 iterator를 사용해 Container의 element를 탐색하고 접근하는 패턴이다.
+- Mediator: 서로 연관된 (컴포넌트)객체가 상호 작용하는 방식(functionality)을 캡슐화 하는 패턴이다.
+- Strategy and Template : 런타임시에 알고리즘의 선택을 가능하게 해주는 패턴이다.
 
 ## Chain of Responsibility pattern
 - Chain of Responsibility pattern은 특정 명령에 대한 로직 처리를 체인형식으로 수행하는 패턴이다.
@@ -338,7 +338,7 @@ awesome the content
 - Cy의 조작 부분을 Client의 Method(SetNodeSize, SetNodeColor, SetEdgeColor)로 만들었던 것을 Invoker로 빼서 만들면 Workspace, DataSource에서도 하나의 CyInvoker를 사용하도록 프로그래밍
 
 ## Memento Pattern
-- Memento Pattern은 객체를 이전의 상태로 되돌릴 수 있도록 하는 패턴이다.(rollback)
+- Memento Pattern은 객체를 이전의 상태로 되돌릴 수 있는 기능을 제공하는 하는 패턴이다.(rollback)
 
 ### Diagram & Participants
 ![memento-pattern](/images/memento-pattern.png)
@@ -416,7 +416,7 @@ class Caretaker {
 - next()와 hasNext()메소드를 가지는 iterator를 사용해 Container의 element를 탐색하고 접근하는 패턴
 
 ## Mediator Pattern
-- Mediator Pattern은 객체가 상호 작용하는 방식을 캡슐화 하는 패턴이다.
+- Mediator Pattern은 서로 연관된 (컴포넌트)객체가 상호 작용하는 방식(functionality)을 캡슐화 하는 패턴이다.
 - 서로 연관성 있는 객체(Componet or Colleague)들은 서로 의사소통(object를 주고받음)을 하는데 이 의사소통을 기능적으로 분리(Mediagtor)하도록 해준다.
 - 중재자 패턴은 frontend 세계에서 WebComponent나 React의 컨셉으로 사용된다.
 - React 같은 라이브러리에서는 Mediator pattern을 사용하기 매우 쉽다.
@@ -523,6 +523,10 @@ class LocationPicker {
 - Mediator Pattern이 더이상 효율적이지 않은 구조로 프로젝트가 성장할 수 있다. 그러므로 Mediator는 시간차원으로 적절히 디자인 되어야 한다.
 - Component를 조금더 잘개 쪼개고 각 Component 간에 연관된 기능성을 ParentComponent나 Service에서 관리하도록 프로그래밍
 
+## Strategy Pattern
+- Strategy Pattern은 런타임시에 알고리즘의 선택을 가능하게 해주는 패턴이다.
+
+### Diagram
 
 
 ## Observer Pattern 
