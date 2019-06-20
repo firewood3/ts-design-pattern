@@ -335,7 +335,7 @@ awesome the content
 
 ### Consequences
 - Client에서 receiver를 조작할 때, Invoker(receiver에 접근할 수 없는)를 통해 Command를 수행하므로, Receiver에 접근하는 의존성을 낮추고 Receiver를 조작하는 확장성과 안정성을 높일 수 있다.
-- Cy의 조작 부분을 Client의 Method로 만들었던 것을 Invoker로 빼서 만들면 Workspace, DataSource에서도 하나의 CyInvoker를 사용하도록 프로그래밍
+- Cy의 조작 부분을 Client의 Method(SetNodeSize, SetNodeColor, SetEdgeColor)로 만들었던 것을 Invoker로 빼서 만들면 Workspace, DataSource에서도 하나의 CyInvoker를 사용하도록 프로그래밍
 
 ## Memento Pattern
 - Memento Pattern은 객체를 이전의 상태로 되돌릴 수 있도록 하는 패턴이다.(rollback)
