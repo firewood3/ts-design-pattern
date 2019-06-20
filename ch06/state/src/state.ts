@@ -82,11 +82,11 @@ class Package {
 let pkg = new Package();
 
 pkg.printStatus();
-pkg.nextState(); // next ordered -> delivered 
+pkg.nextState(); // next: ordered -> delivered 
 pkg.printStatus();
-pkg.nextState(); // next delivered -> received
+pkg.nextState(); // next: delivered -> received
 pkg.printStatus();
-pkg.previousState(); // previous received -> delivered
+pkg.previousState(); // previous: received -> delivered
 pkg.printStatus();
 
 /*
