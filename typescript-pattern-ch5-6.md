@@ -12,7 +12,8 @@ behavioral patterns
 - Mediator: 서로 연관된 (컴포넌트)객체가 상호 작용하는 방식(functionality)을 캡슐화 하는 패턴이다.
 - Strategy and Template : 런타임시에 알고리즘의 선택을 가능하게 해주는 패턴이다.
 - State: 객체 내부의 상태 변경되었을 때, 행동도 변경하게 하는 패턴이다.
-
+- Template: 상위 클래스에서 알고리즘의 구조를 제공하는 디자인 패턴
+- Observer: Subject가 전달하는 상태를 Observer가 자동전파(push 방식) 받는 패턴
 
 ## Chain of Responsibility pattern
 - Chain of Responsibility pattern은 특정 명령에 대한 로직 처리를 체인형식으로 수행하는 패턴이다.
@@ -723,7 +724,112 @@ Package delivered, not received yet.
 - State Pattern에서의 추가적인 상태 도입도 큰 문제가 되지 않는다.
 - 유한 상태에 따라 다른 로직을 처리해야할 경우가 있을 때 이 패턴을 사용할 수 있겠다.
 
+## Template Method Pattern
+- 상위 클래스에서 알고리즘의 구조를 제공하는 디자인 패턴
+- 하위 클래스에서는 알고리즘의 구조를 변경하지 않고 알고리즘의 특정 단계를 재정의 할 수 있도록 한다.
+- [Cook Meal Example](https://www.avajava.com/tutorials/lessons/template-method-pattern.html)
+- [Template Method in Typescript](https://refactoring.guru/design-patterns/template-method/typescript/example)
+
+### Diagram
+![template-method-pattern2](/images/template-method-pattern2.png)
+- AbstractClass는 templateMethod() 메소드를 정의한다.
+- TemplateMethod는 알고리즘의 뼈대를 정의한다.
+- TemplateMethod는 변경 불가능한(invariant) 부분을 실행하고 primitive1()과 primitive2()를 호출하여 변경 가능한(variant) 부분을 실행한다.
+- primitive1() 메소드와 primitive2 메소드는 AbstractClass를 실행한 SubClass1에서 정의된다.
+- hookMethod는 알고리즘 특성상 선택적으로 구현할 수 있는 메소드
+
+### Participants
+
+### Pattern Scope
+
+### TextReader Example
+![template-method-pattern](/images/template-method-pattern.png)
+- TextReader는 상위 추상 클래스로 readAllText() 메소드를 사용하여 리소스의 모든 Text를 읽어오는 메소드이다.
+- readAllText()는 Template Method로써 리소스를 byte로 변경하는 단계(decodeBytes())와 byte를 text로 변경하는 단계(readAllBytes())를 거친다.
+- AsciiTextReader는 TextReader를 상속받고 decodeBytes 메소드를 재정의 한다. 
+- FileAsciiTextReader와 HttpAsciiTextReader는 AsciiTextReader를 상속받고 readAllBytes() 메소드를 재정의 한다.
+- HttpAsciiTextReader 인스턴스의 readAllTest()를 사용하면 Http 리소스의 텍스르를 반환을수 있고, FileAsciiTestReader 인스턴스의 readAllTest()를 사용하면 File 리소스의 텍스트를 반환받을 수 있다.
+
+### Implementaion
+```ts
+abstract class TextReader {
+  // Template Method
+  async readAllText(): Promise<string> {
+    let bytes = await this.readAllBytes();
+    let text = this.decodeBytes(bytes);
+
+    return text;
+  }
+
+  // abstract Method
+  abstract async readAllBytes(): Promise<Buffer>;
+
+  // abstract Method
+  abstract decodeBytes(bytes: Buffer): string;
+}
+
+abstract class AsciiTextReader extends TextReader {
+  decodeBytes(bytes: Buffer): string {
+    return bytes.toString('ascii');
+  }
+}
+
+class FileAsciiTextReader extends AsciiTextReader {
+  constructor(
+    public path: string
+  ) {
+    super();
+  }
+
+  async readAllBytes(): Promise<Buffer> {
+    return new Promise<Buffer>((resolve, reject) => {
+      FS.readFile(this.path, (error, bytes) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(bytes);
+        }
+      });
+    });
+  }
+}
+
+class HttpAsciiTextReader extends AsciiTextReader {
+  constructor(
+    public url: string
+  ) {
+    super();
+  }
+
+  async readAllBytes(): Promise<Buffer> {
+    return new Promise<Buffer>((resolve, reject) => {
+      request(this.url, {
+        encoding: null
+      }, (error, bytes, body) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(body);
+        }
+      });
+    });
+  }
+}
+
+// Http로 Text를 받아올 때는 HttpAsciiTextReader를 사용
+let httpAsciiTextReader = new HttpAsciiTextReader('http://host/path');
+let httpText = httpAsciiTextReader.readAllText();
+
+// File에 있는 Text를 받아올 때는 FileAsciiTextReader를 사용
+let fileAsciiTextReader = new FileAsciiTextReader('file://host/path');
+let fileText = httpAsciiTextReader.readAllText();
+```
+
+### Consequences
+
 ## Observer Pattern 
+- Subject가 전달하는 상태를 Observer가 자동전파(push 방식) 받는 패턴
+
 - 상태 전파를 받고자하는 Client는 Observer를 Subject객체에 등록하고, Subject 객체는 next()함수를 통해 등록된 Observer에게 상태를 전파하는 패턴
 - Observer pattern의 Subject는 읽고 쓰기 가능
 - Observable은 읽기 전용. 

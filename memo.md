@@ -225,3 +225,36 @@ constructor() {
 }
 ```
 
+## Template Method Pattern
+- 상위클래스에서 알고리즘의 구조를 제공하는 디자인 패턴
+- 하위 클래스에서는 알고리즘의 구조를 변경하지 않고 알고리즘의 특정 단계를 재정의 할 수 있도록 한다.
+### Diagram
+![template-method-pattern](/images/template-method-pattern.png)
+
+### Participants
+
+### Pattern Scope
+
+### Implementaion
+```ts
+
+```
+
+### Consequences
+
+
+[template-method](https://dzone.com/articles/design-patterns-template-method)
+[Cook Meal 예제](https://www.avajava.com/tutorials/lessons/template-method-pattern.html)
+- 상위 클래스에서 명령의 뼈대를 제공하고 
+- 알고리즘의 뼈대를 정의하는 
+- Strategy Pattern에 Processing Outline을 더한 패턴.
+
+- 서브클래싱이나 상속을 할때, 빌딩은 보통 아래에서 위로 지어진다. (보통 하위 클래스가 상위 클래스의 메소드를 구현한다.)
+- 서브클래스는 기반을 상속받고 그것에서 더 추가한다.
+- 하지만 이 구조를 뒤바꾸는 것은 때때로 유용하다.
+
+- 처리의 개요를 정의하고 교환 가능한 알고리즘을 가지는 Strategy Pattern을 고려해보자.
+- 만약 우리가 이 구조를 클래스의 구조에 적용한다면, 우리는 Templete Method Pattern을 갖게 된다.
+
+
+
