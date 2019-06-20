@@ -409,5 +409,122 @@ class Caretaker {
 ### Consequences
 - Memento Pattern은 originator의 상태를 관리하는것을 쉽게 해주므로써, 저장과 복원하는 상태의 확장을 가능하게 한다.
 
-## 
+## Iterator Pattern
+- next()와 hasNext()메소드를 가지는 iterator를 사용해 Container의 element를 탐색하고 접근하는 패턴
 
+## Mediator Pattern
+- Mediator Pattern은 객체가 상호 작용하는 방식을 캡슐화 하는 패턴이다.
+- 서로 연관성 있는 객체(Componet or Colleague)들은 서로 의사소통(object를 주고받음)을 하는데 이 의사소통을 기능적으로 분리(Mediagtor)하도록 해준다.
+- 중재자 패턴은 frontend 세계에서 WebComponent나 React의 컨셉으로 사용된다.
+- React 같은 라이브러리에서는 Mediator pattern을 사용하기 매우 쉽다.
+
+### Diagram
+![mediator-pattern](/images/mediator-pattern.png)
+![mediator-pattern2](/images/mediator-pattern2.png)
+
+- 지역을 선택하는 경우의 자료구조는 상위지역에서 하위 지역을 선택하는 트리 구조로 이루어진다.
+- CountryInput / ProvidenceInput / CityInput가 나타내어야 하는 데이터는 모두 연관되어있다.
+- 이 연관된 데이터와 Component or Colleague의 이벤트를 관리하는 중재자(Mediator)를 재사용성과 유지보수성이 높아진다.
+
+
+### Participants
+- Mediator: 보통 프레임워크에서 미리 정의된 추상화나 골격(Skeleton)이다. mediator를 사용하여 의사소통하는 인터페이스를 정의한다.
+- Concrete mediator: Mediator를 사용하는 Colleague classes의 협력을 관리한다.
+- Colleague classes: 자신의 변경사항을 Mediator에게 알리고, Mediator의 변경을 받아들인다.
+
+### Implementation
+```ts
+// 최종 주소값을 정의한 인터페이스
+interface LocationResult {
+  country: string;
+  province: string;
+  city: string;
+}
+
+// Mediator
+class LocationPicker {
+	// Component or Colleagues
+	$country = $(document.createElement('select'));
+	// Component or Colleagues
+	$province = $(document.createElement('select'));
+	// Component or Colleagues
+  $city = $(document.createElement('select'));
+  $element = $(document.createElement('div'))
+    .append(this.$country)
+    .append(this.$province)
+		.append(this.$city);
+		
+  constructor() {
+		// 각 Component에 초기값을 설정해주고 있음
+    LocationPicker.setOptions(this.$country, LocationPicker.getCountries());
+    LocationPicker.setOptions(this.$province, ['-']);
+		LocationPicker.setOptions(this.$city, ['-']);
+		
+		// Component의 이벤트를 달아주고 있음
+    this.$country.change(() => {
+			// Country가 변경되면 Providence의 값을 변경해준다.
+      this.updateProvinceOptions();
+    });
+    this.$province.change(() => {
+			// Providence가 변경되면 City의 값을 변경해준다.
+      this.updateCityOptions();
+    });
+	}
+	
+	// 최종 주소 값을 불러오는 메소드
+  get value(): LocationResult {
+    return {
+      country: this.$country.val(),
+      province: this.$province.val(),
+      city: this.$city.val()
+    };
+	}
+	
+  updateProvinceOptions(): void {
+    let country: string = this.$country.val();
+    let provinces = LocationPicker.getProvincesByCountry(country);
+    LocationPicker.setOptions(this.$province, provinces);
+    this.$city.val('-');
+  }
+  updateCityOptions(): void {
+    let country: string = this.$country.val();
+    let province: string = this.$province.val();
+    let cities = LocationPicker.getCitiesByCountryAndProvince(country, province);
+    LocationPicker.setOptions(this.$city, cities);
+	}
+
+  private static setOptions($select: JQuery, values: string[]): void {
+    $select.empty();
+    let $options = values.map(value => {
+      return $(document.createElement('option'))
+        .text(value)
+        .val(value);
+    });
+    $select.append($options);
+  }
+  private static getCountries(): string[] {
+    return ['-'].concat([/* countries */]);
+  }
+  private static getProvincesByCountry(country: string): string[] {
+    return ['-'].concat([/* provinces */]);
+  }
+  private static getCitiesByCountryAndProvince(country: string, province: string): string[] {
+    return ['-'].concat([/* cities */]);
+  }
+}
+```
+
+### Pattern Scope & Consequences
+- 증가되는 재사용성과 명확한 상호작용이 Mediator를 통해 소개되기 때문에 프로그램의 신용도를 높일 수 있다.
+- Mediator Pattern은 코드의 품질을 높이는데 도움이 되고 프로젝트를 유지보수하기 쉽도록한다.
+- Mediator Pattern이 더이상 효율적이지 않은 구조로 프로젝트가 성장할 수 있다. 그러므로 Mediator는 시간차원으로 적절히 디자인 되어야 한다.
+
+
+
+
+## Observer Pattern 
+- 상태 전파를 받고자하는 Client는 Observer를 Subject객체에 등록하고, Subject 객체는 next()함수를 통해 등록된 Observer에게 상태를 전파하는 패턴
+- Observer pattern의 Subject는 읽고 쓰기 가능
+- Observable은 읽기 전용. 
+- operator는 observable을 반환하고 push방식이 체인으로 연결되서 상태전파를 연속적으로 일어남(reactive programming)
+- operator은 fure function의 사용(functional programming)

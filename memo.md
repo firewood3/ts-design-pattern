@@ -100,3 +100,128 @@ function buildRocket() {
 펙토리 메소드는 객체를 건설하는 공장으로써의 메소드이다.  전체 로켓을 건설하거나 싱글 컴포넌트를 건설하는 메소드가 팩토리 메소드가 될 수 있다.
 
 대상 객체를 건설하기 위해 하나의 펙토리 메소드는 다른 펙토리메소드에 의존할 수 있다. 펙토리 메소드 패턴은 이유있는 합리적인 복잡성에 유연성을 제공합니다. 
+
+## Mediator Pattern
+
+- UIComponents와 관련된 객체의 연결은 극도로 복잡해질수 있다.
+- OOP는 객체에 따라 기능을 나눈다.
+- 이는 코딩을 쉽고 명확하며 좀더 직관적으로 만든다.
+- 그러나 이는 재사용성을 보장하지 않고 때때로는 코드를 나중에 다시볼때 이해하기 어렵게 만든다.
+- (단일 Operation은 잘 알수 있을지라도, Operation간의 연결이 복잡해지면 혼란스러울 수 있다.)
+
+- 사용자 프로필을 수정하는 페이지를 생각해보자.
+- nickname과 tagline과 같은 input이 독립적으로 있는데 이는 각각 연관되어있다.
+- 지역을 선택하는 경우를 예로 들면, 지역 선택은 상위 지역에서 하위 지역을 선택하는 트리형태로 될 수 있다.
+- 하지만 이 객체들이 단 하나의 거대한 컨트롤러로 직접적으로 관리되어진다면, 재사용성에 제한이 생길 것이다.
+- 이 상황에 수행된 코드는 사람들이 이해하기 어려운 경향이 있다.
+
+- 중재자 패턴은 이러한 문제를 elements와 objects의 연결성(coupling)을 groups으로 분리하므로써 해결한다.
+- 그리고 director를 elements의 a group 사이에 추가하고 다른 objects는 다음과 같이 나타난다.
+
+![mediator-pattern](/images/mediator-pattern.png)
+
+- 이 objects들은 다른 object와 함께 상호작용하는 하나의 객체로써 mediator를 형성한다.
+- Mediator는 관련된 객체의 기능을 분리하므로써 적절한 캡슐화와 더 나은 재사용성을 갖는다.
+- 중재자 패턴은 frontend 세계에서 WebComponent나 React의 컨셉으로 사용된다.
+
+### Participants
+- Mediator: 보통 프레임워크에서 미리 정의된 추상화나 골격(Skeleton)이다. mediator를 사용하여 의사소통하는 인터페이스를 정의한다.
+- Concrete mediator: Mediator를 사용하는 Colleague classes의 협력을 관리한다.
+- Colleague classes: 자신의 변경사항을 Mediator에게 알리고, Mediator의 변경을 받아들인다.
+
+
+### Pattern Scope
+- Mediator Pattern은 하나의 프로젝트의 많은 부분을 연결할 수 있지만, 개요에 직접적이거나 거대한 영향을 미치지 않는다.
+- 증가되는 재사용성과 명확한 상호작용이 Mediator를 통해 소개되기 때문에 프로그램의 신용도를 높일 수 있다.
+- Mediator Pattern은 코드의 품질을 높이는데 도움이 되고 프로젝트를 유지보수하기 쉽도록한다.
+
+### Implementation
+- React 같은 라이브러리에서는 Mediator pattern을 사용하기 매우 쉽다.
+
+```ts
+// 데이터 구조
+interface LocationResult {
+  country: string;
+  province: string;
+  city: string;
+}
+```
+
+```ts
+// Mediator
+class LocationPicker {
+  $country = $(document.createElement('select'));
+  $province = $(document.createElement('select'));
+  $city = $(document.createElement('select'));
+  $element = $(document.createElement('div'))
+    .append(this.$country)
+    .append(this.$province)
+    .append(this.$city);
+  get value(): LocationResult {
+    return {
+      country: this.$country.val(),
+      province: this.$province.val(),
+      city: this.$city.val()
+    };
+  }
+}
+```
+
+```ts
+// slelect element의 option을 업데이트하는 메소드
+private static setOptions($select: JQuery, values: string[]): void {
+  $select.empty();
+  // value로 넘어온 값을 opetion Element로 변환해주고 있음
+  let $options = values.map(value => {
+    return $(document.createElement('option'))
+      .text(value)
+      .val(value);
+  });
+  $select.append($options);
+}
+```
+
+```ts
+// Mediator에서 City, Province, City의 값을 전달하는 함수
+private static getCountries(): string[] {
+  return ['-'].concat([/* countries */]);
+}
+private static getProvincesByCountry(country: string): string[] {
+  return ['-'].concat([/* provinces */]);
+}
+private static getCitiesByCountryAndProvince(country: string, province: string): string[] {
+  return ['-'].concat([/* cities */]);
+}
+```
+
+```ts
+// 각 Component의 Option을 업데이트 해주는 함수
+updateProvinceOptions(): void {
+  let country: string = this.$country.val();
+  let provinces = LocationPicker.getProvincesByCountry(country);
+  LocationPicker.setOptions(this.$province, provinces);
+  this.$city.val('-');
+}
+updateCityOptions(): void {
+  let country: string = this.$country.val();
+  let province: string = this.$province.val();
+  let cities = LocationPicker.getCitiesByCountryAndProvince(country, province);
+  LocationPicker.setOptions(this.$city, cities);
+}
+```
+
+```ts
+// colleagues들을 짜고, change event 리스너를 추가
+constructor() {
+  LocationPicker.setOptions(this.$country, LocationPicker.getCountries());
+  LocationPicker.setOptions(this.$province, ['-']);
+  LocationPicker.setOptions(this.$city, ['-']);
+  this.$country.change(() => {
+    this.updateProvinceOptions();
+  });
+  this.$province.change(() => {
+    this.updateCityOptions();
+  }); 
+}
+```
+
