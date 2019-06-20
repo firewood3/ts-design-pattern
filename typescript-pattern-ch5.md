@@ -10,7 +10,7 @@ behavioral patterns
 - Memento: 세부적인 실행을 드러내는 것 없이 상태관리접을을 제공하는것.
 - Iterator:
 - Mediator:
-
+- 
 
 ## Chain of Responsibility pattern
 - Chain of Responsibility pattern은 특정 명령에 대한 로직 처리를 체인형식으로 수행하는 패턴이다.
@@ -220,6 +220,7 @@ biu();
 - Chain of Responsibility 패턴은 "command objects"를 발행하는 Client와 "processing objects"의 수행간에 연결을 분리한다. 
 - Client는 처리 로직의 세부사항을 잘 알지 못해도 되고, Client에 새로운 명령에 따른 로직을 추가하는 것도 쉽다.
 - Client의 명령을 처리하는데 상당한 유연성을 제공한다.
+- Cytoscape의 캔버스를 클릭하는 이벤트의 종류를 "Command object"로 하고 이를 처리하는 Processing Objects로 분리하여 Client에서는 Handler에 Command만 보내면 되도록 프로그래밍
 
 ## Command Pattern
 - Command Pattern은 타겟 객체(receiver)를 조작하는 실행가능한 명령(Command)를 캡슐화(Invoker에서) 하는 패턴이다.
@@ -334,6 +335,7 @@ awesome the content
 
 ### Consequences
 - Client에서 receiver를 조작할 때, Invoker(receiver에 접근할 수 없는)를 통해 Command를 수행하므로, Receiver에 접근하는 의존성을 낮추고 Receiver를 조작하는 확장성과 안정성을 높일 수 있다.
+- Cy의 조작 부분을 Client의 Method로 만들었던 것을 Invoker로 빼서 만들면 Workspace, DataSource에서도 하나의 CyInvoker를 사용하도록 프로그래밍
 
 ## Memento Pattern
 - Memento Pattern은 객체를 이전의 상태로 되돌릴 수 있도록 하는 패턴이다.(rollback)
@@ -408,6 +410,7 @@ class Caretaker {
 
 ### Consequences
 - Memento Pattern은 originator의 상태를 관리하는것을 쉽게 해주므로써, 저장과 복원하는 상태의 확장을 가능하게 한다.
+- UndoRedo 라이브러리가 없다면, Cy의 움직임을 Memento로 관리하는 Caretaker를 사용하여 프로그래밍 
 
 ## Iterator Pattern
 - next()와 hasNext()메소드를 가지는 iterator를 사용해 Container의 element를 탐색하고 접근하는 패턴
@@ -518,7 +521,7 @@ class LocationPicker {
 - 증가되는 재사용성과 명확한 상호작용이 Mediator를 통해 소개되기 때문에 프로그램의 신용도를 높일 수 있다.
 - Mediator Pattern은 코드의 품질을 높이는데 도움이 되고 프로젝트를 유지보수하기 쉽도록한다.
 - Mediator Pattern이 더이상 효율적이지 않은 구조로 프로젝트가 성장할 수 있다. 그러므로 Mediator는 시간차원으로 적절히 디자인 되어야 한다.
-
+- Component를 조금더 잘개 쪼개고 각 Component 간에 연관된 기능성을 ParentComponent나 Service에서 관리하도록 프로그래밍
 
 
 
