@@ -527,7 +527,68 @@ class LocationPicker {
 - Strategy Pattern은 런타임시에 알고리즘의 선택을 가능하게 해주는 패턴이다.
 
 ### Diagram
+![strategy-pattern](/images/strategy-pattern.png)
+- Context는 알고리즘의 실행을 직접적으로 가지고 있지 않고 알고리즘을 Strategy 인터페이스로 간접 수행한다.(stragegy.algorithm())
+- Context가 알고리즘의 실행에 대해 독립적이게 된다.
 
+### Pattern Scope
+- Strategy Pattern은 알고리즘의 캡슐화 방법을 제공하고 같은 OutLine에 알고리즘 관리를 쉽게 만든다.
+
+### Implementation
+```ts
+interface BillingStrategy {
+	getActPrice(rawPrice: number): number;
+}
+
+// 할인 없음
+class NormalBillingStrategy implements BillingStrategy {
+	getActPrice(rawPrice: number): number {
+		return rawPrice;
+	}	
+}
+
+// 50% 할인
+class HappHourStrategy implements BillingStrategy {
+	getActPrice(rawPrice: number): number {
+		return rawPrice;
+	}	
+}
+
+class Customer {
+	// 고객이 주문한 음료의 가격을 저장하는 배열
+	drinks: number[] = [];
+	calcStrategy: BillingStrategy;
+
+	constructor(strategy :BillingStrategy) {
+		this.calcStrategy = strategy;
+	}
+
+	add(price: number) {
+		this.drinks.push(this.calcStrategy.getActPrice(price));
+	}
+
+	printBill() {
+		let total = this.drinks.reduce((a,b)=>a + b);
+		console.log("Total due: " + total);
+		this.drinks = [];
+	}
+}
+
+// 전략을 런타임시에 결정할 수 있다.
+let customer = new Customer(new HappHourStrategy());
+customer.add(100);
+customer.add(200);
+customer.add(300);
+
+customer.printBill();
+
+/*
+Total due: 600
+*/
+```
+
+### Consequences
+- Strategy pattern은 Context에 알고리즘의 추가를 선택이고 쉽게 만든다.
 
 ## Observer Pattern 
 - 상태 전파를 받고자하는 Client는 Observer를 Subject객체에 등록하고, Subject 객체는 next()함수를 통해 등록된 Observer에게 상태를 전파하는 패턴
