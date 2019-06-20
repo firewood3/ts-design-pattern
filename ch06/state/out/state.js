@@ -57,12 +57,15 @@ var Package = /** @class */ (function () {
         configurable: true
     });
     Package.prototype.previousState = function () {
+        // 상태 변경 메소드 호출
         this.state.prev(this);
     };
     Package.prototype.nextState = function () {
+        // 상태 변경 메소드 호출
         this.state.next(this);
     };
     Package.prototype.printStatus = function () {
+        // 상태에 따른 행동 메소드 호출
         this.state.printStatus();
     };
     return Package;

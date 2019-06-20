@@ -67,14 +67,17 @@ class Package {
 	}
 
 	previousState() {
+		// 상태 변경 메소드 호출
 		this.state.prev(this);
 	}
 
 	nextState() {
+		// 상태 변경 메소드 호출
 		this.state.next(this);
 	}
 
 	printStatus() {
+		// 상태에 따른 행동 메소드 호출
 		this.state.printStatus();
 	}
 }
