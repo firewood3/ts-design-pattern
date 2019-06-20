@@ -739,8 +739,11 @@ Package delivered, not received yet.
 - hookMethod는 알고리즘 특성상 선택적으로 구현할 수 있는 메소드
 
 ### Participants
+- Abstract class: Template Method를 정의하고 variant 메소드의 인터페이스를 정의한다.
+- Concrete class: Abstract class를 구현하고 variant 메소드들을 정의한다
 
 ### Pattern Scope
+- Template Method Pattern 알고리즘의 구조에서 중복을 피하고 기능에 확장성을 부여한다.
 
 ### TextReader Example
 ![template-method-pattern](/images/template-method-pattern.png)
@@ -826,6 +829,10 @@ let fileText = httpAsciiTextReader.readAllText();
 ```
 
 ### Consequences
+- Strategy Pattern과 비교하면 Template Method Pattern은 기존 시스템의 알고리즘과 같은 알고리즘의 뼈대를 건설하는 편리함을 제공한다.
+(기존 Client쪽의 알고리즘 코드를 Template Method로 분리할 수 있다.)
+- Template Method Pattern의 실행은 Subclass에 의존하기 때문에, 같은 코드에 다른 브런치를 가지는 결과를 쉽게 만들어 낼 수 있다.
+
 
 ## Observer Pattern 
 - Subject가 전달하는 상태를 Observer가 자동전파(push 방식) 받는 패턴
@@ -835,3 +842,6 @@ let fileText = httpAsciiTextReader.readAllText();
 - Observable은 읽기 전용. 
 - operator는 observable을 반환하고 push방식이 체인으로 연결되서 상태전파를 연속적으로 일어남(reactive programming)
 - operator은 fure function의 사용(functional programming)
+
+## Visitor Pattern
+- 
