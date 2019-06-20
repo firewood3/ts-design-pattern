@@ -11,6 +11,8 @@ behavioral patterns
 - Iterator: next()와 hasNext()메소드를 가지는 iterator를 사용해 Container의 element를 탐색하고 접근하는 패턴이다.
 - Mediator: 서로 연관된 (컴포넌트)객체가 상호 작용하는 방식(functionality)을 캡슐화 하는 패턴이다.
 - Strategy and Template : 런타임시에 알고리즘의 선택을 가능하게 해주는 패턴이다.
+- State: 객체 내부의 상태 변경되었을 때, 행동도 변경하게 하는 패턴이다.
+
 
 ## Chain of Responsibility pattern
 - Chain of Responsibility pattern은 특정 명령에 대한 로직 처리를 체인형식으로 수행하는 패턴이다.
@@ -593,10 +595,24 @@ Total due: 600
 - Graph의 레이아웃을 적용하는 코드를 Strategy 패턴을 사용하여 분리
 
 ## State Pattern
-- State Pattern은 객체 내부의 상태가 변경되었을 때, 행동도 변경하게 하는 패턴이다.
+- State Pattern은 객체 내부의 상태 변경되었을 때, 행동도 변경하게 하는 패턴이다.
+- State Pattern은 유한 상태 머신(finite-state machines)의 개념에 가깝다.
+- State Pattern은 Strategy Pattern으로 변경할 수 있다.(Strategy Pattern에 유한 상태의 계념을 추가한 패턴이다.)
+- [참고: State Design Pattern in Java](https://www.baeldung.com/java-state-design-pattern)
 
 ### Diagram
+![State-patten](/images/state-pattern.png)
+- Context는 state-specific한 행동을 바로 하지 않는다. Context는 State를 참조하여 state-specific한 행동을 수행한다.(state.operation())
+- Context는 state-specific한 행동에 대해서 독립적이다.
+- state1과 state2는 state 인터페이스를 구현하며, state-specific한 행동을 캡슐화 하고, 실행한다.
 
+### Participants
+- State: 내부적으로 변경될 상태 객체의 인터페이스를 정의한다.
+- ConcreteState: State 인터페이스를 구현하며 state-specific한 메서드를 실행한다.
+- Context: 다른 상태를 관리하고 상태에 따른 행동을 수행한다.
+
+### Pattern Scope
+- State Pattern은 특징(상태)의 크기가 정해져 있는 코드에 적용할 수 있다.
 
 ### Implementation
 ```ts
@@ -700,9 +716,12 @@ Package delivered, not received yet.
 This package is already receive.
 Package delivered, not received yet.
 */
-
-
 ```
+
+### Consequences
+- State Pattern은 Context의 메소드 조건부 분기를 줄인다.(Context 객체에서 상태 객체로 처리 로직을 분리하므로)
+- State Pattern에서의 추가적인 상태 도입도 큰 문제가 되지 않는다.
+- 유한 상태에 따라 다른 로직을 처리해야할 경우가 있을 때 이 패턴을 사용할 수 있겠다.
 
 ## Observer Pattern 
 - 상태 전파를 받고자하는 Client는 Observer를 Subject객체에 등록하고, Subject 객체는 next()함수를 통해 등록된 Observer에게 상태를 전파하는 패턴
