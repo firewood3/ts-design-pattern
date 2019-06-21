@@ -1061,3 +1061,8 @@ Hello, **TypeScript**! Popular editors:
 ```
 
 ### Consequences
+- Strategy Pattern과 Visitor Pattern 모두 객체의 알고리즘을 분리해내는 패턴이다.
+- Strategy Pattern은 서로 다른 객체의 다른 동작을 절묘하게 추상화 하기는 여렵다. (Strategy pattern은 하나의 객체에 대해서 처리 알고리즘을 기술)
+- 반면, Visitor Pattern은 서로 다른 객체의 다른 동작을 추상화 하기 쉽다.(Composite로 객체를 구성할 수 있고 각각의 객체에 대한 알고리즘 처리 과정을 Visitor에서 각자 구현)
+- 연관성있는 객체의 구조에서 알고리즘을 분리해내고자 할때 Strategy Pattern을 사용할 수 있겠다.
+- Composite Pattern을 사용한 Graph 분석 알고리즘을 사용할 때, Visitor Pattern을 사용하여 알고리즘 부분을 분리하도록 프로그래밍
