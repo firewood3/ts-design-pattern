@@ -843,6 +843,7 @@ let fileText = httpAsciiTextReader.readAllText();
 
 ## Visitor Pattern
 - Visitor Pattern은 객체의 구조(Composite)에서 알고리즘을 분리해내는 패턴이다.
+- (Strategy Pattern은 객체에서 알고리즘을 분리해내는 패턴이었다.)
 - 분리의 실질적인 결과는 기존의 객체 구조를 변경하지 않고 새로운 기능을 더하는 능력이다.
 - Element에 기능을 선택적으로 추가할 수 있다. / 기능들은 하나의 visitor에 모을 수 있다.
 - Visitor Pattern은 보통 Composite와 함께 사용된다.
