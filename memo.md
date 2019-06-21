@@ -257,4 +257,9 @@ constructor() {
 - 만약 우리가 이 구조를 클래스의 구조에 적용한다면, 우리는 Templete Method Pattern을 갖게 된다.
 
 
+## Visitor Pattern
+- Visitor pattern은 다른 데이터나 개객체를 방문하기위한 정형화된 인터페이스를 제공한다.
+- Visitor Pattern은 보통 compisites와 함께 사용된다.
+- 그리고 이것은 abstract syntax tree(AST)와 같은 자료구조에서 넓게 사용된다.
 
+- Visitor Pattern은 같은 카테코리안에 있는 명령들이 같은 공간에서 코딩 되도록 한다.

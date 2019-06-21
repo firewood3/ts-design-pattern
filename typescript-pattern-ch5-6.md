@@ -1,10 +1,4 @@
 # Behavioral Design Pattern
-- Behavioral Design Pattern은 객체나 클래스가 어떻게 서로 상호작용하는가에 대한 것이다. 
-- Behavioral Design Pattern의 실행은 보통 특정 데이터 구조를 필요로 한다.
-- 패턴이 적용될때, behaviroal design pattern과 structural design pattern은 집중하는 관점이 다르다.
-- behavioal Design Pattern은 Structural Design Pattern과 비교하면 보다 쉽고 좀더 직관적이다.
-
-behavioral patterns
 - Chain of Responsibility: 다른 범위의 행동을 조직한다. 특정 명령(command object)에 대한 로직 처리(processing object)를 체인형식으로 수행하는 패턴이다.
 - Command: 타겟 객체(receiver)를 조작하는 실행가능한 명령(Command)를 캡슐화(Invoker에서) 하는 패턴이다.
 - Memento: 객체를 이전의 상태로 되돌릴 수 있도록 하는 기능을 제공하는 패턴이다.(rollback)
@@ -14,6 +8,7 @@ behavioral patterns
 - State: 객체 내부의 상태 변경되었을 때, 행동도 변경하게 하는 패턴이다.
 - Template: 상위 클래스에서 알고리즘의 구조를 제공하는 디자인 패턴
 - Observer: Subject가 전달하는 상태를 Observer가 자동전파(push 방식) 받는 패턴
+- Visitor: 객체의 구조(Composite)에서 알고리즘을 분리해내는 패턴이다.
 
 ## Chain of Responsibility pattern
 - Chain of Responsibility pattern은 특정 명령에 대한 로직 처리를 체인형식으로 수행하는 패턴이다.
@@ -844,4 +839,225 @@ let fileText = httpAsciiTextReader.readAllText();
 - operator은 fure function의 사용(functional programming)
 
 ## Visitor Pattern
-- 
+- Visitor Pattern은 객체의 구조(Composite)에서 알고리즘을 분리해내는 패턴이다.
+- 분리의 실질적인 결과는 기존의 객체 구조를 변경하지 않고 새로운 기능을 더하는 능력이다.
+- Element에 기능을 선택적으로 추가할 수 있다. / 기능들은 하나의 visitor에 모을 수 있다.
+- Visitor Pattern은 보통 Composite와 함께 사용된다.
+
+### Diagram
+![visitor-pattern](/images/visitor-pattern.png)
+- ElementA는 operation을 직접적으로 실행하지 못하고 operation의 실행을 Visitor에게 위임(Dispatches, delegates)한다(accept(visitor)=>visitor.visitElementA(this)). 
+- ElementA의 operation을 전달받은 Visitor1은 Element1의 참조를 가지고 Element1에 특화된 명령을 처리한다.(visitElementA(e:ElementA))
+
+
+### Pattern Scope
+- Visitor Pattern은 특정 카테고리의 핵심 구조를 형성할 수 있다.
+- 이것은 abstract syntax tree(AST)와 같은 자료구조에서 넓게 사용된다.
+
+### Example
+- 다음과 같은 DOM-like Tree를 가정해 보자. 
+- 이 Tree를 HTML로 렌더링 할 수 있고 MarkDown으로 렌더링 할 수도 있다.
+- 각 Html Node는 Element로 될 수 있고 각각의 마크업 언어로 렌더링 하는 기능은 Visitor에서 수행할 수 있다.
+```json
+[
+  Text {
+    content: "Hello, "
+  },
+  BoldText {
+    content: "TypeScript"
+  },
+  Text {
+    content: "! Popular editors:\n"
+  },
+  UnorderedList {
+    items: [
+      ListItem {
+        content: "Visual Studio Code"
+      }, ListItem {
+        content: "Visual Studio"
+      },
+      ListItem {
+        content: "WebStorm"
+      }
+    ]
+  }
+]
+```
+
+Html로 변환 결과
+```html
+Hello, <b>TypeScript</b>! Popular editors:
+<ul>
+  <li>Visual Studio Code</li>
+  <li>Visual Studio</li>
+  <li>WebStorm</li>
+</ul>
+```
+
+MarkDown으로 변환 결과
+```md
+Hello, **TypeScript**! Popular editors:
+
+- Visual Studio Code
+- Visual Studio
+- WebStorm
+```
+
+![visitor-pattern2](/images/visitor-pattern2.png)
+![visitor-pattern3](/images/visitor-pattern3.png)
+
+### Implementation
+```ts
+// element
+interface Node {
+  // Element는 자신의 기능 호출을 dispatch하는 accept()메소드를 정의한다.
+  appendTo(visitor: NodeVisitor): void;
+}
+
+// visitor
+interface NodeVisitor {
+  // Visitor는 각 Element 마다 기능을 처리하는 메소드를 정의한다.
+  appendText(text: Text): void;
+  appendBold(text: BoldText): void;
+  appendUnorderedList(list: UnorderedList): void;
+  appendListItem(item: ListItem): void;
+}
+
+// Concrete Element
+export class Text implements Node {
+  constructor(
+    public content: string
+	) { }
+	
+  appendTo(visitor: NodeVisitor): void {
+    visitor.appendText(this);
+  }
+}
+
+// Concrete Element
+class BoldText implements Node {
+  constructor(
+    public content: string
+  ) { }
+
+  appendTo(visitor: NodeVisitor): void {
+    visitor.appendBold(this);
+  }
+}
+
+// Concrete Element
+class UnorderedList implements Node {
+	// UnorderedList는 자식 Element[]를 Composite하고 있음
+  constructor(
+    public items: ListItem[]
+  ) { }
+
+  appendTo(visitor: NodeVisitor): void {
+    visitor.appendUnorderedList(this);
+  }
+}
+
+// Concrete Element
+class ListItem implements Node {
+  constructor(
+    public content: string
+  ) { }
+
+  appendTo(visitor: NodeVisitor): void {
+    visitor.appendListItem(this);
+  }
+}
+
+// Concrete Visitor
+class HTMLVisitor implements NodeVisitor {
+	// 각 Element가 실행될때마다 output을 추가함
+  output = '';
+
+	// 각 Element에 맞는 실행을 구현함
+  appendText(text: Text) {
+    this.output += text.content;
+  }
+
+  appendBold(text: BoldText) {
+    this.output += `<b>${text.content}</b>`;
+  }
+
+  appendUnorderedList(list: UnorderedList) {
+		this.output += '<ul>';
+			
+    for (let item of list.items) {
+      item.appendTo(this);
+		}
+			
+    this.output += '</ul>';
+  }
+
+  appendListItem(item: ListItem) {
+    this.output += `<li>${item.content}</li>`;
+  }
+}
+
+// Concrete Visitor
+class MarkdownVisitor implements NodeVisitor {
+	// 각 Element가 실행될때마다 output을 추가함
+  output = '';
+
+  appendText(text: Text) {
+    this.output += text.content;
+  }
+
+  appendBold(text: BoldText) {
+    this.output += `**${text.content}**`;
+  }
+
+  appendUnorderedList(list: UnorderedList) {
+		this.output += '\n';
+			
+    for (let item of list.items) {
+      item.appendTo(this);
+    }
+  }
+
+  appendListItem(item: ListItem) {
+    this.output += `- ${item.content}\n`;
+  }
+}
+
+// 모든 Node를 composite하는 객체
+let nodes: Node[] = [
+  new Text('Hello, '),
+  new BoldText('TypeScript'),
+  new Text('! Popular editors:\n'),
+  new UnorderedList([
+    new ListItem('Visual Studio Code'),
+    new ListItem('Visual Studio'),
+    new ListItem('WebStorm')
+  ])
+];
+
+let htmlVisitor = new HTMLVisitor();
+let markdownVisitor = new MarkdownVisitor();
+
+// 모든 노드를 순회하면서 appendTo 명령을 실행함 
+for (let node of nodes) {
+  node.appendTo(htmlVisitor);
+  node.appendTo(markdownVisitor);
+}
+
+console.log(htmlVisitor.output);
+/*
+Hello, <b>TypeScript</b>! Popular editors:
+<ul><li>Visual Studio Code</li><li>Visual Studio</li><li>WebStorm</li></ul>
+*/
+
+console.log(markdownVisitor.output);
+/*
+Hello, **TypeScript**! Popular editors:
+
+- Visual Studio Code
+- Visual Studio
+- WebStorm
+*/
+```
+
+### Consequences
