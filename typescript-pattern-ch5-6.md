@@ -549,7 +549,7 @@ class NormalBillingStrategy implements BillingStrategy {
 // 50% 할인
 class HappHourStrategy implements BillingStrategy {
 	getActPrice(rawPrice: number): number {
-		return rawPrice;
+		return rawPrice / 2;
 	}	
 }
 
@@ -582,7 +582,7 @@ customer.add(300);
 customer.printBill();
 
 /*
-Total due: 600
+Total due: 300
 */
 ```
 
