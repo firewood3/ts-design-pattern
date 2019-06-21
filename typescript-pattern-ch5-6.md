@@ -593,6 +593,7 @@ Total due: 300
 
 ## State Pattern
 - State Pattern은 객체 내부의 상태 변경되었을 때, 행동도 변경하게 하는 패턴이다.
+- Client는 특정 상태에 따른 특정 행동을 수행한다.
 - State Pattern은 유한 상태 머신(finite-state machines)의 개념에 가깝다.
 - State Pattern은 Strategy Pattern으로 변경할 수 있다.(Strategy Pattern에 유한 상태의 계념을 추가한 패턴이다.)
 - [참고: State Design Pattern in Java](https://www.baeldung.com/java-state-design-pattern)
@@ -719,6 +720,7 @@ Package delivered, not received yet.
 - State Pattern은 Context의 메소드 조건부 분기를 줄인다.(Context 객체에서 상태 객체로 처리 로직을 분리하므로)
 - State Pattern에서의 추가적인 상태 도입도 큰 문제가 되지 않는다.
 - 유한 상태에 따라 다른 로직을 처리해야할 경우가 있을 때 이 패턴을 사용할 수 있겠다.
+- Client는 특정 상태에 따른 특정 행동을 수행한다.
 
 ## Template Method Pattern
 - 상위 클래스에서 알고리즘의 구조를 제공하는 디자인 패턴
