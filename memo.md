@@ -263,3 +263,40 @@ constructor() {
 - 그리고 이것은 abstract syntax tree(AST)와 같은 자료구조에서 넓게 사용된다.
 
 - Visitor Pattern은 같은 카테코리안에 있는 명령들이 같은 공간에서 코딩 되도록 한다.
+
+[Meetup](https://www.slideshare.net/bitnineglobal?utm_campaign=profiletracking&utm_medium=sssite&utm_source=ssslideview)
+
+[Knowledge Graph](https://www.poolparty.biz/what-is-a-knowledge-graph?utm_medium=adwords&utm_campaign=Knowledge-Graphs&utm_source=&utm_term=knowledge%20graph&hsa_ver=3&hsa_net=adwords&hsa_grp=68941312954&hsa_cam=1694192619&hsa_acc=3312589451&hsa_ad=329036472668&hsa_mt=p&hsa_src=g&hsa_tgt=kwd-302858377820&hsa_kw=knowledge%20graph&gclid=CjwKCAjw3azoBRAXEiwA-_64Og70CK2wDsNHRsUsJQZUE1kiPN2zKJK2sMYMyZ7pRK_-5oSO8NZMDxoCGewQAvD_BwE)
+
+[ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load생산된다.)
+
+- 머신러닝 같은 전문가로부터 도출되는 도메인이 Knowlege domain인데, 이 도메인으로 도출되는 그래프가 knowledge Graph이다.
+- 그래프 데이터베이스는 Knowledge의 그래프의 기초를 형성한다.
+- Extract, transform, load
+
+- Regression 회귀, 퇴보
+- bayesian 기초적인 네트워크
+
+- Probaility 개연성 Prediction 예측
+
+- verification 검증 확인
+
+- Table Scheme Data 를 모델링하고
+- API를 통해 실시간으로 데이터 수집및 그래프 업데이트
+
+
+- Multiple Linear Regression: 통계적인 방법
+
+Bitnine의 8번째 Graph Database Meetup: DecisionTutor
+
+Bitnine은 Graph Database의 핵심 오퍼링 중 하나인 DecisionTutor를 주제로 밋업을 진행하였다. DecisionTutor란 과거의 데이터를 학습하고 분석하여 지식 그래프를 만들어 내고, 이를 기반으로 사용자의 의사결정을 지원하는 그래프 데이터페이스 솔루션을 말한다.
+
+DecisionTutor의 절차는 다음과 같다.
+1. Graph Modeling: 기존 데이터를 검증하고, Graph Model로 추출, 변형, 로드
+2. Learing & Analysis: 데이터를 ML의 기법으로 학습시켜 유의미한 값을 도출
+3. Knowledge Graph: ML으로 도출된 데이터를 그래프 기반의 지식 베이스를 구축
+4. Predictive Service: Knowledge를 기반으로 다양한 분야에 의사결정을 지원
+
+#AgensGraph #GraphDatabase #KnowledgeGraph #DecisionTutor
+
+https://bitnine.tistory.com/entry/%EB%B9%84%ED%8A%B8%EB%82%98%EC%9D%B8-8%ED%9A%8C%EC%B0%A8-%EA%B7%B8%EB%9E%98%ED%94%84-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4Graph-Database-Meetup-%EB%B0%8B%EC%97%85-%EB%A6%AC%EB%B7%B0

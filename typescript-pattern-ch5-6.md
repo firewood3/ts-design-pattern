@@ -224,6 +224,7 @@ biu();
 - Command Pattern은 타겟 객체(receiver)를 조작하는 실행가능한 명령(Command)를 캡슐화(Invoker에서) 하는 패턴이다.
 
 ### Diagram
+![command-pattern2](/images/command-pattern2.png)
 ![command-pattern](/images/command-pattern.png)
 
 - Invoker는 Command 인터페이스의 수행(command.execute())을 통해 Reciver를 조작한다.
