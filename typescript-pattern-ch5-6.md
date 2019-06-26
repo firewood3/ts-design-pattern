@@ -1,16 +1,16 @@
 # Behavioral Design Pattern
-- Chain of Responsibility: 다른 범위의 행동을 조직한다. 특정 명령(command object)에 대한 로직 처리(processing object)를 체인형식으로 수행하는 패턴이다.
-- Command: 타겟 객체(receiver)를 조작하는 실행가능한 명령(Command)를 캡슐화(Invoker에서) 하는 패턴이다.
-- Memento: 객체를 이전의 상태로 되돌릴 수 있도록 하는 기능을 제공하는 패턴이다.(rollback)
-- Iterator: next()와 hasNext()메소드를 가지는 iterator를 사용해 Container의 element를 탐색하고 접근하는 패턴이다.
-- Mediator: 서로 연관된 (컴포넌트)객체가 상호 작용하는 방식(functionality)을 캡슐화 하는 패턴이다.
-- Strategy and Template : 런타임시에 알고리즘의 선택을 가능하게 해주는 패턴이다.
-- State: 객체 내부의 상태 변경되었을 때, 행동도 변경하게 하는 패턴이다.
-- Template: 상위 클래스에서 알고리즘의 구조를 제공하는 디자인 패턴
-- Observer: Subject가 전달하는 상태를 Observer가 자동전파(push 방식) 받는 패턴
-- Visitor: 객체의 구조(Composite)에서 알고리즘을 분리해내는 패턴이다.
+- [Chain of Responsibility](#Chain-of-Responsibility-Pattern): 다른 범위의 행동을 조직한다. 특정 명령(command object)에 대한 로직 처리(processing object)를 체인형식으로 수행하는 패턴이다.
+- [Command](#Command-Pattern): 타겟 객체(receiver)를 조작하는 실행가능한 명령(Command)를 캡슐화(Invoker에서) 하는 패턴이다.
+- [Memento](#Memento-Pattern): 객체를 이전의 상태로 되돌릴 수 있도록 하는 기능을 제공하는 패턴이다.(rollback)
+- [Iterator](#Iterator-Pattern): next()와 hasNext()메소드를 가지는 iterator를 사용해 Container의 element를 탐색하고 접근하는 패턴이다.
+- [Mediator](#Mediator-Pattern): 서로 연관된 (컴포넌트)객체가 상호 작용하는 방식(functionality)을 캡슐화 하는 패턴이다.
+- [Strategy](#Strategy-Pattern): 런타임시에 알고리즘의 선택을 가능하게 해주는 패턴이다.
+- [State](#State-Pattern): 객체 내부의 상태 변경되었을 때, 행동도 변경하게 하는 패턴이다.
+- [Template Method](#Template-Method-Pattern): 상위 클래스에서 알고리즘의 구조를 제공하는 디자인 패턴
+- [Observer](#Observer-Pattern): Subject가 전달하는 상태를 Observer가 자동전파(push 방식) 받는 패턴
+- [Visitor](#Visitor-Pattern): 객체의 구조(Composite)에서 알고리즘을 분리해내는 패턴이다.
 
-## Chain of Responsibility pattern
+## Chain of Responsibility Pattern
 - Chain of Responsibility pattern은 특정 명령에 대한 로직 처리를 체인형식으로 수행하는 패턴이다.
 - 책임연쇄 패턴은 "command object"와 "processing objects"로 이루어 진다.
 - "처리 객체"는 "명령 객체"를 처리하는 로직을 가지고, 다음 "처리객체"로 "명령 객체"를 보낸다.(Chain)

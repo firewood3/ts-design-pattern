@@ -2,6 +2,12 @@
 [Creational Design Patterns](https://en.wikipedia.org/wiki/Creational_pattern)는 객체의 생성 메커니즘을 다루는 패턴이다.
 - 일반적으로 객체(Product)를 생성할 경우 내부의 세부사항(Components)을 조립하는 유연성을 갖지 못한다. Creational Design Patterns은 이러한 문제점을 해결한다.
 
+- [Factory Method](#Factory-Method-Pattern): Product을 만들기 위한 Factory를 만드는 패턴
+- [Abstract Factory](#Abstract-Factory-Pattern): Factory Method Pattern에서 팩토리 메소드들의 컬렉션을 인터페이스로 제공하므로써 전체 펙토리를 교환가능하게 만드는 패턴
+- [Builder](#Builder-Pattern): Abstract Factory Pattern에서 확장하여 builder에서 product인스턴스를 가지고 있게하여 좀더 유연한 프로그래밍을 할 수 있는 패턴
+- [Singleton](#Singleton-Pattern): 객체의 인스턴스가 단 하나만 존재하는 패턴
+
+
 ## Factory Method Pattern
 ### 재정리
 - Product을 만들기 위한 Factory를 만드는 패턴
@@ -156,6 +162,7 @@ FreightRocket {
 
 ## Abstract Factory Pattern
 ### 개요
+- 팩토리 메소드들의 컬렉션을 인터페이스로 제공하므로써 전체 펙토리를 교환가능하게 만드는 펙토리 패턴
 - 추상 팩토리 패턴은 concrete products를 구체화하지 않고 팩토리 메소드들의 컬렉션을 인터페이스로 제공한다. 이렇게 하면, 전체의 펙토리는 교환가능하게 된다.
 - 팩토리 메소드와 다른점은 client로 불리는 부분으로 Product를 빌드하는 과정을 추출해낸 것이다. 이렇게 하므로써, factory 부분은 좀더 Components(Product의 property)에 집중할 수 있다.
 

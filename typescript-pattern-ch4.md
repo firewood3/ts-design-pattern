@@ -6,13 +6,13 @@ Structural Design Pattern은 객체의 구성에 대한 패턴이다.
 - structural object pattern은 서로의 조각을 엮어서 사용하는 것이다.
 - 이 두 structural pattern은 서로를 보완한다.
 
-- Composite: 원시적인 composite object를 사용하여 구조를 빌드 하는 것이다. tree-like
-- Decorator: 기능성을 클래스나 객체에 동적으로 추가하는 것이다. 
-- Adapter: concrete adapters들의 실행에 의한 다른 adaptees들과 함께 작동하는 general interface를 제공한다.
-- Bridge: 구현으로부터 추상을 분리하고 분리해낸 둘을 교환가능하게 만든다.
-- Facade: 복잡한 하위 시스템들의 조합을 위한 간단한 인터페이스를 제공한다.
-- Flyweight: 메모리 효율성과 성능을 향상시키기위해 많은 아이템을 사용하는 무상태의 객체들을 공유한다.
-- Proxy: 추가적인 책임들을 취하는 대리자로써 행동한다.
+- [Composite](#Composite-Pattern): 같은 방식으로 작동하는 객체들(composite, tree-like)의 그룹을 설명하는 패턴.
+- [Decorator](#Decorator-Pattern): 객체의 원래 기능은 손상시키지 않으면서 새로운 기능을 동적으로 더하는 패턴.
+- [Adapter](#Adapter-Pattern): 클래스의 인터페이스를 다른 인터페이스로 변환하는 패턴.
+- [Bridge](#Bridge-Pattern): 구현으로부터 추상을 분리하고 분리해낸 둘을 교환가능하게 만드는 패턴.
+- [Façade](#Façade-Pattern): 복잡한 하위 시스템들의 조합을 위한 간단한 인터페이스를 제공하는 패턴.
+- [Flyweight](#Flyweight-Pattern): 메모리 효율성과 성능을 향상시키기위해 많은 아이템을 사용하는 무상태의 객체들을 공유하는 패턴.
+- [Proxy](#Proxy-Pattern): 추가적인 책임들을 취하는 대리자로써 행동하는 Proxy 객체를 사용하는 패턴.
 
 ## Composite Pattern
 - [Composite Pattern](https://en.wikipedia.org/wiki/Composite_pattern)은 같은 방식으로 작동하는 객체들의 그룹을 설명하는 패턴이다.
